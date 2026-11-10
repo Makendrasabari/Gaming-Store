@@ -23,12 +23,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 2. Mobile navigation toggle & responsive drawer
   if (mobileToggle && navMenu) {
+    // Prevent Lenis from capturing scroll inside the mobile drawer
+    navMenu.setAttribute('data-lenis-prevent', '');
+
     const openMenu = () => {
       navMenu.classList.add('nav-open');
       mobileToggle.classList.add('is-active');
       mobileToggle.setAttribute('aria-expanded', 'true');
       document.body.classList.add('mobile-menu-active');
       document.documentElement.classList.add('mobile-menu-active');
+      if (window.lenis && typeof window.lenis.stop === 'function') {
+        window.lenis.stop();
+      }
     };
 
     const closeMenu = () => {
@@ -37,6 +43,9 @@ document.addEventListener('DOMContentLoaded', () => {
       mobileToggle.setAttribute('aria-expanded', 'false');
       document.body.classList.remove('mobile-menu-active');
       document.documentElement.classList.remove('mobile-menu-active');
+      if (window.lenis && typeof window.lenis.start === 'function') {
+        window.lenis.start();
+      }
     };
 
     mobileToggle.addEventListener('click', (e) => {

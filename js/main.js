@@ -7,6 +7,15 @@
 /* ==========================================================================
    1. GLOBAL STACKLY CART ENGINE
    ========================================================================== */
+window.isCartClosing = false;
+let isCartClosing = false;
+
+window.closeCartDrawer = function (e) {
+  if (window.StacklyCart && typeof window.StacklyCart.close === 'function') {
+    window.StacklyCart.close(e);
+  }
+};
+
 window.StacklyCart = {
   getCart() {
     try {
@@ -105,6 +114,9 @@ window.StacklyCart = {
         cart.splice(index, 1);
       }
       this.saveCart(cart);
+      if (typeof window.renderCartPage === 'function') {
+        window.renderCartPage();
+      }
     }
   },
 
@@ -115,6 +127,9 @@ window.StacklyCart = {
       cart.splice(index, 1);
       this.saveCart(cart);
       showToastNotification(`Removed "${removedTitle}" from cart.`);
+      if (typeof window.renderCartPage === 'function') {
+        window.renderCartPage();
+      }
     }
   },
 
@@ -124,6 +139,9 @@ window.StacklyCart = {
     this.render();
     this.updateBadges();
     showToastNotification('All items removed from cart.', 'info');
+    if (typeof window.renderCartPage === 'function') {
+      window.renderCartPage();
+    }
   },
 
   updateBadges() {
@@ -139,17 +157,48 @@ window.StacklyCart = {
   },
 
   open() {
-    const drawer = document.getElementById('cart-drawer');
-    const overlay = document.getElementById('cart-overlay');
-    if (drawer) drawer.classList.add('active');
-    if (overlay) overlay.classList.add('active');
+    if (isCartClosing || window.isCartClosing) return;
+    ensureGlobalCartDrawer();
+    const drawers = document.querySelectorAll('.cart-drawer, #cart-drawer');
+    drawers.forEach(d => {
+      d.classList.add('active');
+      d.setAttribute('aria-hidden', 'false');
+    });
+    const overlays = document.querySelectorAll('.cart-drawer-overlay, #cart-overlay');
+    overlays.forEach(o => {
+      o.classList.add('active');
+      o.setAttribute('aria-hidden', 'false');
+    });
+    document.body.classList.add('cart-open');
+    document.documentElement.classList.add('cart-open');
+    this.render();
   },
 
-  close() {
-    const drawer = document.getElementById('cart-drawer');
-    const overlay = document.getElementById('cart-overlay');
-    if (drawer) drawer.classList.remove('active');
-    if (overlay) overlay.classList.remove('active');
+  close(e) {
+    if (e) {
+      if (typeof e.preventDefault === 'function') e.preventDefault();
+      if (typeof e.stopPropagation === 'function') e.stopPropagation();
+      if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
+    }
+    isCartClosing = true;
+    window.isCartClosing = true;
+    setTimeout(() => {
+      isCartClosing = false;
+      window.isCartClosing = false;
+    }, 380);
+
+    const drawers = document.querySelectorAll('.cart-drawer, #cart-drawer');
+    drawers.forEach(d => {
+      d.classList.remove('active');
+      d.setAttribute('aria-hidden', 'true');
+    });
+    const overlays = document.querySelectorAll('.cart-drawer-overlay, #cart-overlay');
+    overlays.forEach(o => {
+      o.classList.remove('active');
+      o.setAttribute('aria-hidden', 'true');
+    });
+    document.body.classList.remove('cart-open');
+    document.documentElement.classList.remove('cart-open');
   },
 
   render() {
@@ -208,7 +257,12 @@ window.StacklyCart = {
           
           <div class="cart-item-action-col">
             <span class="cart-item-total-price">$${itemTotal.toFixed(2)}</span>
-            <button class="cart-remove-item" onclick="StacklyCart.removeItem(${idx})" title="Remove item" aria-label="Remove item">&times;</button>
+            <button class="cart-remove-item" data-index="${idx}" onclick="StacklyCart.removeItem(${idx})" title="Remove item" aria-label="Remove item">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="pointer-events: none;">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
           </div>
         </div>
       `;
@@ -275,6 +329,9 @@ function ensureGlobalProductModal() {
 window.closeProductModal = function () {
   const modal = document.getElementById('product-modal');
   if (modal) modal.classList.remove('active');
+  if (window.lenis && typeof window.lenis.start === 'function') {
+    window.lenis.start();
+  }
 };
 
 window.openProductModal = function (title, price, desc, img, id) {
@@ -340,6 +397,9 @@ window.openProductModal = function (title, price, desc, img, id) {
   }
 
   modal.classList.add('active');
+  if (window.lenis && typeof window.lenis.stop === 'function') {
+    window.lenis.stop();
+  }
 };
 
 
@@ -460,23 +520,30 @@ window.alert = function (message) {
 
 // Global Cart Drawer DOM injection if not in page
 function ensureGlobalCartDrawer() {
-  if (document.getElementById('cart-drawer')) {
-    // Already in page (e.g. shop.html), attach close/checkout listeners
+  const existingDrawer = document.getElementById('cart-drawer');
+  if (existingDrawer) {
+    existingDrawer.setAttribute('data-lenis-prevent', '');
     const overlay = document.getElementById('cart-overlay');
-    const closeBtn = document.getElementById('cart-close-btn');
+    const closeBtns = existingDrawer.querySelectorAll('#cart-close-btn, .cart-close-btn, [data-cart-close]');
     const checkoutBtn = document.getElementById('checkout-btn');
 
+    const handleClose = (e) => {
+      if (e) {
+        if (typeof e.preventDefault === 'function') e.preventDefault();
+        if (typeof e.stopPropagation === 'function') e.stopPropagation();
+      }
+      StacklyCart.close(e);
+    };
+
     if (overlay) {
-      overlay.onclick = () => StacklyCart.close();
+      overlay.onclick = handleClose;
     }
-    if (closeBtn) {
-      closeBtn.onclick = (e) => {
-        if (e) e.stopPropagation();
-        StacklyCart.close();
-      };
-    }
+    closeBtns.forEach(btn => {
+      btn.onclick = handleClose;
+    });
     if (checkoutBtn) {
-      checkoutBtn.onclick = () => {
+      checkoutBtn.onclick = (e) => {
+        if (e) e.preventDefault();
         StacklyCart.close();
         const isSub = window.location.pathname.includes('customer-dashboard') || window.location.pathname.includes('admin-dashboard');
         window.location.href = isSub ? '../404.html' : '404.html';
@@ -489,18 +556,26 @@ function ensureGlobalCartDrawer() {
   const overlay = document.createElement('div');
   overlay.className = 'cart-drawer-overlay';
   overlay.id = 'cart-overlay';
+  overlay.setAttribute('aria-hidden', 'true');
 
   const drawer = document.createElement('aside');
   drawer.className = 'cart-drawer';
   drawer.id = 'cart-drawer';
   drawer.setAttribute('aria-label', 'Shopping Cart');
+  drawer.setAttribute('aria-hidden', 'true');
+  drawer.setAttribute('data-lenis-prevent', '');
   drawer.innerHTML = `
     <div class="cart-drawer-header">
       <h3 class="cart-drawer-title">YOUR GAMING CART</h3>
-      <button class="cart-close-btn" id="cart-close-btn" aria-label="Close Cart" title="Close Cart" onclick="StacklyCart.close()">&times;</button>
+      <button class="cart-close-btn" id="cart-close-btn" type="button" data-cart-close="true" aria-label="Close Cart" title="Close Cart" onclick="StacklyCart.close(event)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="pointer-events: none;">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
     </div>
     
-    <div class="cart-items-container" id="cart-items-list">
+    <div class="cart-items-container" id="cart-items-list" data-lenis-prevent>
       <!-- Injected by StacklyCart.render() -->
     </div>
     
@@ -527,34 +602,85 @@ function ensureGlobalCartDrawer() {
   document.body.appendChild(overlay);
   document.body.appendChild(drawer);
 
-  overlay.onclick = () => StacklyCart.close();
-  const injectedClose = drawer.querySelector('#cart-close-btn');
-  if (injectedClose) {
-    injectedClose.onclick = (e) => {
-      if (e) e.stopPropagation();
-      StacklyCart.close();
-    };
-  }
-  drawer.querySelector('#checkout-btn').onclick = () => {
+  const handleClose = (e) => {
+    if (e) {
+      if (typeof e.preventDefault === 'function') e.preventDefault();
+      if (typeof e.stopPropagation === 'function') e.stopPropagation();
+    }
+    StacklyCart.close(e);
+  };
+
+  overlay.onclick = handleClose;
+  const injectedCloses = drawer.querySelectorAll('#cart-close-btn, .cart-close-btn, [data-cart-close]');
+  injectedCloses.forEach(btn => {
+    btn.onclick = handleClose;
+  });
+  drawer.querySelector('#checkout-btn').onclick = (e) => {
+    if (e) e.preventDefault();
     StacklyCart.close();
     const isSub = window.location.pathname.includes('customer-dashboard') || window.location.pathname.includes('admin-dashboard');
     window.location.href = isSub ? '../404.html' : '404.html';
   };
 }
 
-// Universal Cart Drawer Close Event Delegation (Click on × or overlay, or Escape key)
+// Universal Cart Drawer Close & Item Remove Event Delegation
 document.addEventListener('click', (e) => {
-  if (e.target && (e.target.closest('#cart-close-btn') || e.target.closest('.cart-close-btn'))) {
-    e.preventDefault();
+  // 1. Close Button Clicked
+  const closeBtn = e.target && e.target.closest ? e.target.closest('#cart-close-btn, .cart-close-btn, [data-cart-close]') : null;
+  if (closeBtn) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     if (window.StacklyCart && typeof window.StacklyCart.close === 'function') {
-      window.StacklyCart.close();
+      window.StacklyCart.close(e);
+    }
+    return;
+  }
+
+  // 2. Remove Item Cross Mark Clicked
+  const removeBtn = e.target && e.target.closest ? e.target.closest('.cart-remove-item') : null;
+  if (removeBtn) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    const idxAttr = removeBtn.getAttribute('data-index');
+    const idx = parseInt(idxAttr, 10);
+    if (!isNaN(idx) && window.StacklyCart && typeof window.StacklyCart.removeItem === 'function') {
+      window.StacklyCart.removeItem(idx);
+    }
+    return;
+  }
+
+  // 3. Overlay Clicked Outside Drawer
+  const overlay = e.target && e.target.closest ? e.target.closest('#cart-overlay, .cart-drawer-overlay') : null;
+  if (overlay && !(e.target.closest && e.target.closest('.cart-drawer'))) {
+    if (e) e.preventDefault();
+    if (window.StacklyCart && typeof window.StacklyCart.close === 'function') {
+      window.StacklyCart.close(e);
     }
   }
 });
 
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') {
+// Touch event handler for responsive & mobile devices
+document.addEventListener('touchend', (e) => {
+  const closeBtn = e.target && e.target.closest ? e.target.closest('#cart-close-btn, .cart-close-btn, [data-cart-close]') : null;
+  if (closeBtn) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     if (window.StacklyCart && typeof window.StacklyCart.close === 'function') {
+      window.StacklyCart.close(e);
+    }
+  }
+}, { passive: false });
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' || e.key === 'Esc') {
+    const isCartActive = document.querySelector('.cart-drawer.active, #cart-drawer.active');
+    if (isCartActive && window.StacklyCart && typeof window.StacklyCart.close === 'function') {
       window.StacklyCart.close();
     }
   }
@@ -725,6 +851,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (navCartBtn) {
     navCartBtn.addEventListener('click', (e) => {
       e.preventDefault();
+      if (isCartClosing || window.isCartClosing) return;
       StacklyCart.open();
     });
   }
@@ -822,7 +949,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <h3 class="stackly-modal-title" id="info-modal-title">Stackly Notice</h3>
           <button class="stackly-modal-close" id="info-modal-close" aria-label="Close Modal">&times;</button>
         </div>
-        <div class="stackly-modal-body" id="info-modal-body">
+        <div class="stackly-modal-body" id="info-modal-body" data-lenis-prevent>
           <p>Stackly Gaming Hub content loading...</p>
         </div>
         <div class="stackly-modal-footer">
@@ -832,7 +959,12 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     document.body.appendChild(legalModal);
 
-    const closeModal = () => legalModal.classList.remove('active');
+    const closeModal = () => {
+      legalModal.classList.remove('active');
+      if (window.lenis && typeof window.lenis.start === 'function') {
+        window.lenis.start();
+      }
+    };
     legalModal.querySelector('.stackly-modal-backdrop').addEventListener('click', closeModal);
     document.getElementById('info-modal-close').addEventListener('click', closeModal);
     document.getElementById('info-modal-ack-btn').addEventListener('click', closeModal);
@@ -845,6 +977,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('info-modal-title').textContent = title;
     document.getElementById('info-modal-body').innerHTML = contentHtml;
     legalModal.classList.add('active');
+    if (window.lenis && typeof window.lenis.stop === 'function') {
+      window.lenis.stop();
+    }
   };
 
   // Footer Links Modal Handlers

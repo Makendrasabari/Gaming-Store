@@ -1626,17 +1626,22 @@
 
   <div class="cart-drawer-overlay" id="cart-overlay"></div>
 
-  <div class="cart-drawer" id="cart-drawer">
+  <div class="cart-drawer" id="cart-drawer" data-lenis-prevent aria-label="Shopping Cart">
 
     <div class="cart-drawer-header">
 
       <h3 class="cart-drawer-title">YOUR GAMING CART</h3>
 
-      <button class="cart-close-btn" id="cart-close-btn" onclick="StacklyCart.close()" aria-label="Close Cart" title="Close Cart">&times;</button>
+      <button class="cart-close-btn" id="cart-close-btn" type="button" data-cart-close="true" onclick="StacklyCart.close(event)" aria-label="Close Cart" title="Close Cart">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="pointer-events: none;">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
 
     </div>
 
-    <div class="cart-items-container" id="cart-items-list">
+    <div class="cart-items-container" id="cart-items-list" data-lenis-prevent>
 
       <!-- Injected by JavaScript -->
 
@@ -2094,14 +2099,23 @@
 
 
     // Toolbar & Floating Cart buttons trigger StacklyCart
-
     const toolbarCartBtn = document.getElementById('toolbar-cart-btn');
-
-    if (toolbarCartBtn) toolbarCartBtn.onclick = () => StacklyCart.open();
+    if (toolbarCartBtn) {
+      toolbarCartBtn.onclick = (e) => {
+        if (e) e.preventDefault();
+        if (window.isCartClosing) return;
+        StacklyCart.open();
+      };
+    }
 
     const floatingCartBtn = document.getElementById('floating-cart-btn');
-
-    if (floatingCartBtn) floatingCartBtn.onclick = () => StacklyCart.open();
+    if (floatingCartBtn) {
+      floatingCartBtn.onclick = (e) => {
+        if (e) e.preventDefault();
+        if (window.isCartClosing) return;
+        StacklyCart.open();
+      };
+    }
 
   </script>
 
