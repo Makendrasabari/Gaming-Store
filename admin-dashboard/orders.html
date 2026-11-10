@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Intelligence — Stackly Command Center</title>
+  <link rel="icon" type="image/webp" href="../assets/logos/stackly-favicon.webp">
+  
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/admin-dashboard.css">
+<link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body class="admin-layout-body">
+
+  <!-- SIDEBAR BACKDROP OVERLAY -->
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <!-- ADMIN SIDEBAR -->
+  <aside class="admin-sidebar" id="adminSidebar">
+    <div>
+      <div class="admin-brand-header">
+        <a href="dashboard.html" title="Dashboard Home">
+          <img src="../assets/logos/stackly-logo.webp" alt="Stackly Admin" class="admin-brand-logo">
+        </a>
+        <button class="admin-sidebar-close-btn" id="adminSidebarCloseBtn" aria-label="Close navigation drawer" title="Close Menu">&times;</button>
+        <span class="admin-system-tag">
+          <span style="width: 6px; height: 6px; border-radius: 50%; background-color: #00F0FF; display: inline-block;"></span>
+          Command Center v3.8
+        </span>
+      </div>
+
+      <ul class="admin-nav-list">
+        <li>
+          <a href="dashboard.html" class="admin-nav-link">
+            <svg class="admin-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            <span>Command Overview</span>
+          </a>
+        </li>
+        <li>
+          <a href="inventory.html" class="admin-nav-link">
+            <svg class="admin-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+            <span>Game Inventory</span>
+          </a>
+        </li>
+        <li>
+          <a href="orders.html" class="admin-nav-link active">
+            <svg class="admin-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+            <span>Order Intelligence</span>
+          </a>
+        </li>
+        <li>
+          <a href="players.html" class="admin-nav-link">
+            <svg class="admin-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            <span>Player Insights</span>
+          </a>
+        </li>
+        <li>
+          <a href="revenue.html" class="admin-nav-link">
+            <svg class="admin-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+            <span>Revenue Intelligence</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="admin-logout-wrap">
+      <button class="admin-logout-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+        <span>Sign Out</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN VIEW -->
+  <div class="admin-main-wrapper">
+    <header class="admin-topbar">
+      <div class="admin-topbar-left">
+                <button class="admin-hamburger-btn" id="adminHamburgerBtn" aria-label="Open Admin Menu" title="Open Admin Menu">
+          <span class="dash-hamburger-line"></span>
+          <span class="dash-hamburger-line"></span>
+          <span class="dash-hamburger-line"></span>
+        </button>
+        <div class="admin-page-title-wrap">
+          <h2 class="admin-page-title">
+            <span class="title-full">ORDER INTELLIGENCE & LOGISTICS</span>
+            <span class="title-short">ORDERS</span>
+          </h2>
+          <span class="admin-security-pill">Automated Routing</span>
+        </div>
+      </div>
+
+      <div class="admin-user-profile" id="adminProfileBtn" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" title="View Profile">
+        <div class="admin-meta-info" style="text-align: right;">
+          <span class="admin-full-name">Marcus Vance</span>
+          <span class="admin-role-badge" style="color: #00F0FF; font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">Expert</span>
+        </div>
+        <div class="admin-avatar-initials">MV</div>
+
+        <!-- Professional Profile Dropdown (Role: Expert) -->
+        <div class="admin-profile-dropdown" id="adminProfileDropdown">
+          <div class="profile-card-header">
+            <div class="profile-card-avatar">MV</div>
+            <div class="profile-card-info">
+              <div class="profile-card-name" id="adminDropdownUserName">Marcus Vance</div>
+              <div class="profile-card-email" id="adminDropdownUserEmail">admin.vance@gmail.com</div>
+              <div class="profile-card-role-badge">
+                <span class="role-dot"></span>
+                <span class="role-text">Role: Expert</span>
+              </div>
+            </div>
+          </div>
+          <div class="profile-card-divider"></div>
+          <div class="profile-card-actions">
+            <a href="../login.html" class="profile-action-link logout-action admin-logout-btn">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+              <span>Sign Out</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="admin-content-area">
+      <!-- SECTION 1: ORDER METRICS (TOTAL, PENDING, COMPLETED, CANCELLED) -->
+      <section class="admin-stats-grid reveal-on-scroll">
+        <div class="admin-stat-tile">
+          <span class="admin-stat-label">Total Orders Processed</span>
+          <span class="admin-stat-value" style="color: #00F0FF;">64,280</span>
+          <span class="admin-stat-delta">+1,840 today</span>
+        </div>
+        <div class="admin-stat-tile">
+          <span class="admin-stat-label">Pending Dispatch</span>
+          <span class="admin-stat-value" style="color: #FFB800;">420</span>
+          <span class="admin-stat-delta">Warehouse queuing active</span>
+        </div>
+        <div class="admin-stat-tile">
+          <span class="admin-stat-label">Completed Deliveries</span>
+          <span class="admin-stat-value" style="color: var(--accent-lime);">62,810</span>
+          <span class="admin-stat-delta">97.8% flawless fulfillment</span>
+        </div>
+        <div class="admin-stat-tile">
+          <span class="admin-stat-label">Return / RMA Rate</span>
+          <span class="admin-stat-value" style="color: #8C99A6;">0.4%</span>
+          <span class="admin-stat-delta">Well below industry standard</span>
+        </div>
+      </section>
+
+      <!-- SECTION 2: ORDER DISTRIBUTION PIE & MONTHLY ORDERS GRAPH -->
+      <div class="duo-cards-grid" style="display: grid; grid-template-columns: 1fr 1.4fr; gap: 2rem;">
+        <!-- Distribution Pie -->
+        <section class="admin-panel reveal-on-scroll">
+          <div class="admin-panel-header">
+            <div>
+              <h3 class="admin-panel-title">ORDER STATUS DISTRIBUTION</h3>
+              <p style="font-size: 0.82rem; color: #7A8996;">Current dispatch health</p>
+            </div>
+          </div>
+          <div id="admin-order-status-pie" style="width: 100%; min-height: 220px;"></div>
+        </section>
+
+        <!-- Monthly Orders Line Graph -->
+        <section class="admin-panel reveal-on-scroll">
+          <div class="admin-panel-header">
+            <div>
+              <h3 class="admin-panel-title">MONTHLY ORDERS VOLUME (2026)</h3>
+              <p style="font-size: 0.82rem; color: #7A8996;">Order count throughput per month</p>
+            </div>
+            <span class="admin-security-pill">+24% YoY</span>
+          </div>
+          <div id="admin-monthly-orders-line" style="width: 100%; min-height: 220px;"></div>
+        </section>
+      </div>
+
+      <!-- SECTION 3: ORDER FULFILLMENT INTELLIGENCE TABLE -->
+      <section class="admin-panel reveal-on-scroll">
+        <div class="admin-panel-header">
+          <h3 class="admin-panel-title">ACTIVE ORDER INTELLIGENCE STREAM</h3>
+          <span style="font-size: 0.85rem; color: #00F0FF;">Real-time Telemetry</span>
+        </div>
+        <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>ORDER #</th>
+              <th>CUSTOMER</th>
+              <th>ITEMS</th>
+              <th>DELIVERY ADDRESS</th>
+              <th>TOTAL</th>
+              <th>STATUS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="color: #00F0FF; font-weight: 700;">#SK-10492</td>
+              <td style="color: #FFF;">Alexander Croft</td>
+              <td>GeForce RTX 4090 + CyberKey Pro</td>
+              <td>Austin, TX, USA</td>
+              <td style="color: #00F0FF; font-weight: 700;">$1,789.98</td>
+              <td><span style="color: var(--accent-lime); font-weight: 700;">Delivered</span></td>
+            </tr>
+            <tr>
+              <td style="color: #00F0FF; font-weight: 700;">#SK-10493</td>
+              <td style="color: #FFF;">Sophia Lin</td>
+              <td>PlayStation 5 Pro 2TB Bundle</td>
+              <td>Vancouver, BC, CA</td>
+              <td style="color: #00F0FF; font-weight: 700;">$699.99</td>
+              <td><span style="color: #00F0FF; font-weight: 700;">In Transit</span></td>
+            </tr>
+            <tr>
+              <td style="color: #00F0FF; font-weight: 700;">#SK-10494</td>
+              <td style="color: #FFF;">Liam Henderson</td>
+              <td>Elden Ring: Shadow + SoundWave 7.1</td>
+              <td>London, UK</td>
+              <td style="color: #00F0FF; font-weight: 700;">$309.98</td>
+              <td><span style="color: #FFB800; font-weight: 700;">Packing</span></td>
+            </tr>
+            <tr>
+              <td style="color: #00F0FF; font-weight: 700;">#SK-10495</td>
+              <td style="color: #FFF;">Lucas Silva</td>
+              <td>Pulse Zero 49g Wireless Mouse</td>
+              <td>São Paulo, BR</td>
+              <td style="color: #00F0FF; font-weight: 700;">$129.99</td>
+              <td><span style="color: #00F0FF; font-weight: 700;">Customs Hold</span></td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+    <script src="../js/lenis.min.js"></script>
+    <script src="../js/gsap.min.js"></script>
+    <script src="../js/ScrollTrigger.min.js"></script>
+  <script src="../js/smooth-scroll.js"></script>
+  <script src="../js/main.js"></script>
+<script src="../js/charts.js"></script>
+  <script src="../js/admin.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Order Status Donut Chart
+      StacklyCharts.createDonutChart('admin-order-status-pie', [
+        { label: 'Instant Digital Keys', value: 48200, color: '#00FF87' },
+        { label: 'Hardware Delivered', value: 14610, color: '#00F0FF' },
+        { label: 'In Transit', value: 1050, color: '#FF7700' },
+        { label: 'Pending Pack', value: 420, color: '#FF3B30' }
+      ], { size: 180, centerText: '64.2K', centerLabel: 'Orders' });
+
+      // 2. Monthly Orders Volume Line Chart
+      StacklyCharts.createLineChart('admin-monthly-orders-line', [
+        { label: 'Jan', value: 4200 },
+        { label: 'Feb', value: 4900 },
+        { label: 'Mar', value: 5600 },
+        { label: 'Apr', value: 6100 },
+        { label: 'May', value: 6800 },
+        { label: 'Jun', value: 7400 },
+        { label: 'Jul', value: 8100 },
+        { label: 'Aug', value: 9200 },
+        { label: 'Sep', value: 9800 },
+        { label: 'Oct', value: 11200 }
+      ], { prefix: '', lineColor: '#00F0FF', height: 210 });
+    });
+  </script>
+</body>
+</html>
+

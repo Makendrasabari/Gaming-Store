@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — Stackly Gaming Hub | Customer &amp; Admin Access</title>
+  <meta name="description" content="Sign in to your Stackly Player Hub or Admin Command Center. Manage games, monitor orders, and view gaming analytics.">
+  <link rel="icon" type="image/webp" href="assets/logos/stackly-favicon.webp">
+  
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+  <link rel="stylesheet" href="css/preloader.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- ======================================================================
+       CINEMATIC GUN-SHOOTING PRELOADER
+       ====================================================================== -->
+  <div id="gaming-preloader" aria-hidden="true">
+    <div class="preloader-backdrop">
+      <div class="preloader-cyber-grid"></div>
+      <div class="preloader-ambient-glow"></div>
+    </div>
+    <div class="preloader-flash-overlay"></div>
+    <div class="preloader-shake-layer">
+      <div class="preloader-core">
+        <div class="preloader-hud-bracket bracket-top-left"></div>
+        <div class="preloader-hud-bracket bracket-top-right"></div>
+        <div class="preloader-hud-bracket bracket-bottom-left"></div>
+        <div class="preloader-hud-bracket bracket-bottom-right"></div>
+
+        <div class="preloader-logo-wrap">
+          <img src="assets/logos/stackly-logo.webp" alt="Stackly Gaming" class="preloader-brand-logo">
+          <span class="preloader-tagline">NEXT-GEN GAMING ECOSYSTEM</span>
+        </div>
+
+        <div class="preloader-weapon-viewport">
+          <div class="gun-rig">
+            <img src="assets/images/preloader-gun.webp" alt="Futuristic Weapon" class="gun-asset">
+            <div class="gun-mechanical-slide">
+              <div class="gun-slide-vents">
+                <span></span><span></span><span></span><span></span>
+              </div>
+            </div>
+            <div class="gun-plasma-chamber"></div>
+            <div class="gun-holo-sight"></div>
+            <div class="gun-muzzle-blast">
+              <div class="blast-star"></div>
+              <div class="blast-ray-horizontal"></div>
+              <div class="blast-ray-vertical"></div>
+            </div>
+            <div class="gun-shockwave-ring"></div>
+            <div class="gun-plasma-tracer"></div>
+            <div class="plasma-eject-particle"></div>
+          </div>
+        </div>
+
+        <div class="preloader-meter-wrap">
+          <div class="preloader-meter-header">
+            <span class="preloader-telemetry-text">ACQUIRING WEAPON MATRIX...</span>
+            <span class="preloader-percent-readout">0%</span>
+          </div>
+          <div class="preloader-meter-track">
+            <div class="preloader-meter-fill"></div>
+          </div>
+          <div class="preloader-status-bar">
+            <span class="preloader-status-dot"></span>
+            <span>SYSTEM ENCRYPTION SECURE // DIRECT FEED</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Two-Column Authentication Split Layout (No Navbar, No Footer) -->
+  <div class="auth-split-wrapper">
+    
+    <!-- LEFT SIDE: High-Impact Gaming Art Pane -->
+    <aside class="auth-art-column login-art" aria-label="Gaming Visual Showcase">
+      <div class="auth-art-overlay"></div>
+      
+      <div class="auth-art-top">
+        <div class="auth-art-badge">
+          <span class="auth-art-badge-dot"></span>
+          STACKLY CLOUD SECURE
+        </div>
+      </div>
+
+      <div class="auth-art-bottom">
+        <h2 class="auth-art-headline">
+          LEVEL UP YOUR <br>
+          <span class="accent-text">GAMING LEGACY.</span>
+        </h2>
+        <p class="auth-art-caption">
+          Access your unified player command station, real-time inventory metrics, order telemetry, and tournament achievements in one seamless hub.
+        </p>
+      </div>
+    </aside>
+
+    <!-- RIGHT SIDE: Centered Auth Form Pane -->
+    <main class="auth-form-column">
+      <div class="auth-form-inner">
+        
+        <header class="auth-brand-header">
+          <a href="index.html" class="auth-logo-link" title="Return to Stackly Home">
+            <img src="assets/logos/stackly-logo.webp" alt="Stackly Gaming" class="auth-logo-img">
+          </a>
+          <h1 class="auth-heading">ACCESS STACKLY</h1>
+          <p class="auth-subheading">Enter your player credentials and choose your access role.</p>
+        </header>
+
+        <form id="stackly-login-form" novalidate>
+          
+          <!-- Field 1: Player / Admin Email -->
+          <div class="auth-field-group">
+            <label for="login-email" class="auth-field-label">
+              <span>Player / Admin Email</span>
+            </label>
+            <div class="auth-input-wrapper">
+              <input 
+                type="email" 
+                id="login-email" 
+                name="email"
+                class="auth-field-input" 
+                placeholder="Enter the email" 
+                autocomplete="off"
+                required>
+
+              <!-- Google Recommended Accounts Dropdown (Hover/Focus) -->
+              <div class="google-email-suggestions" id="login-google-suggestions" role="listbox" aria-label="Google Recommended Accounts">
+                <div class="google-sugg-header">
+                  <svg class="google-icon" width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
+                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/>
+                  </svg>
+                  <span>Google Recommended Accounts</span>
+                </div>
+                <div class="google-sugg-list">
+                  <div class="google-sugg-item" data-email="makendrasabari02@gmail.com" data-name="Makendra Sabari" data-role="customer" tabindex="0">
+                    <div class="google-sugg-avatar avatar-blue">M</div>
+                    <div class="google-sugg-info">
+                      <span class="google-sugg-name">Makendra Sabari</span>
+                      <span class="google-sugg-email">makendrasabari02@gmail.com</span>
+                    </div>
+                    <span class="google-sugg-badge">Saved</span>
+                  </div>
+                  <div class="google-sugg-item" data-email="player.stackly@gmail.com" data-name="Stackly Player" data-role="customer" tabindex="0">
+                    <div class="google-sugg-avatar avatar-green">P</div>
+                    <div class="google-sugg-info">
+                      <span class="google-sugg-name">Stackly Player</span>
+                      <span class="google-sugg-email">player.stackly@gmail.com</span>
+                    </div>
+                    <span class="google-sugg-badge">Demo</span>
+                  </div>
+                  <div class="google-sugg-item" data-email="admin.stackly@gmail.com" data-name="Stackly Admin" data-role="admin" tabindex="0">
+                    <div class="google-sugg-avatar avatar-red">A</div>
+                    <div class="google-sugg-info">
+                      <span class="google-sugg-name">Stackly Admin</span>
+                      <span class="google-sugg-email">admin.stackly@gmail.com</span>
+                    </div>
+                    <span class="google-sugg-badge">Admin</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="auth-error-msg" id="email-val-error">Please enter a valid email address.</div>
+          </div>
+
+          <!-- Field 2: Password -->
+          <div class="auth-field-group">
+            <label for="login-password" class="auth-field-label">
+              <span>Security Key (Password)</span>
+            </label>
+            <input 
+              type="password" 
+              id="login-password" 
+              class="auth-field-input" 
+              placeholder="Enter the password" 
+              autocomplete="current-password"
+              required>
+            <div class="auth-forgot-row" style="display: flex; justify-content: flex-end; margin-top: 0.5rem;">
+              <a href="404.html" class="forgot-password-link">Forgot Password?</a>
+            </div>
+            <div class="auth-error-msg" id="password-val-error">Please enter your password.</div>
+          </div>
+
+          <!-- Field 3: Role Selector -->
+          <div class="auth-role-wrapper">
+            <span class="auth-role-legend">Access Protocol (Role) *</span>
+            <div class="auth-role-grid">
+              
+              <!-- Customer Role Card -->
+              <div class="role-card-btn" data-role="customer" tabindex="0" role="button" aria-label="Customer Role">
+                <div class="role-card-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                  </svg>
+                </div>
+                <span class="role-card-title">Customer</span>
+                <span class="role-card-desc">Player Hub</span>
+              </div>
+
+              <!-- Admin Role Card -->
+              <div class="role-card-btn" data-role="admin" tabindex="0" role="button" aria-label="Admin Role">
+                <div class="role-card-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                    <line x1="8" y1="21" x2="16" y2="21"></line>
+                    <line x1="12" y1="17" x2="12" y2="21"></line>
+                  </svg>
+                </div>
+                <span class="role-card-title">Admin</span>
+                <span class="role-card-desc">Command Center</span>
+              </div>
+            </div>
+            <div class="auth-error-msg" id="role-val-error">Please select your access role.</div>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="auth-submit-btn">
+            <span>Authorize &amp; Launch Dashboard</span>
+          </button>
+
+          <!-- Switch to Signup Link -->
+          <div class="auth-switch-box">
+            <span>Don't have a Stackly account?</span>
+            <a href="signup.html" class="auth-switch-link">Create Account</a>
+          </div>
+
+        </form>
+      </div>
+    </main>
+
+  </div>
+
+    <script src="js/lenis.min.js"></script>
+    <script src="js/gsap.min.js"></script>
+    <script src="js/ScrollTrigger.min.js"></script>
+  <script src="js/smooth-scroll.js"></script>
+  <script src="js/preloader.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

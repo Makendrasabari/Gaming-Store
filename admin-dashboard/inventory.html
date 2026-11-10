@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Inventory — Stackly Command Center</title>
+  <link rel="icon" type="image/webp" href="../assets/logos/stackly-favicon.webp">
+  
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/admin-dashboard.css">
+<link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body class="admin-layout-body">
+
+  <!-- SIDEBAR BACKDROP OVERLAY -->
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <!-- ADMIN SIDEBAR -->
+  <aside class="admin-sidebar" id="adminSidebar">
+    <div>
+      <div class="admin-brand-header">
+        <a href="dashboard.html" title="Dashboard Home">
+          <img src="../assets/logos/stackly-logo.webp" alt="Stackly Admin" class="admin-brand-logo">
+        </a>
+        <button class="admin-sidebar-close-btn" id="adminSidebarCloseBtn" aria-label="Close navigation drawer" title="Close Menu">&times;</button>
+        <span class="admin-system-tag">
+          <span style="width: 6px; height: 6px; border-radius: 50%; background-color: #00F0FF; display: inline-block;"></span>
+          Command Center v3.8
+        </span>
+      </div>
+
+      <ul class="admin-nav-list">
+        <li>
+          <a href="dashboard.html" class="admin-nav-link">
+            <svg class="admin-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            <span>Command Overview</span>
+          </a>
+        </li>
+        <li>
+          <a href="inventory.html" class="admin-nav-link active">
+            <svg class="admin-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+            <span>Game Inventory</span>
+          </a>
+        </li>
+        <li>
+          <a href="orders.html" class="admin-nav-link">
+            <svg class="admin-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+            <span>Order Intelligence</span>
+          </a>
+        </li>
+        <li>
+          <a href="players.html" class="admin-nav-link">
+            <svg class="admin-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            <span>Player Insights</span>
+          </a>
+        </li>
+        <li>
+          <a href="revenue.html" class="admin-nav-link">
+            <svg class="admin-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+            <span>Revenue Intelligence</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="admin-logout-wrap">
+      <button class="admin-logout-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+        <span>Sign Out</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN VIEW -->
+  <div class="admin-main-wrapper">
+    <header class="admin-topbar">
+      <div class="admin-topbar-left">
+                <button class="admin-hamburger-btn" id="adminHamburgerBtn" aria-label="Open Admin Menu" title="Open Admin Menu">
+          <span class="dash-hamburger-line"></span>
+          <span class="dash-hamburger-line"></span>
+          <span class="dash-hamburger-line"></span>
+        </button>
+        <div class="admin-page-title-wrap">
+          <h2 class="admin-page-title">
+            <span class="title-full">GAME INVENTORY & STOCK WAREHOUSE</span>
+            <span class="title-short">INVENTORY</span>
+          </h2>
+          <span class="admin-security-pill">Warehouse Nodes: 12 Active</span>
+        </div>
+      </div>
+
+      <div class="admin-user-profile" id="adminProfileBtn" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" title="View Profile">
+        <div class="admin-meta-info" style="text-align: right;">
+          <span class="admin-full-name">Marcus Vance</span>
+          <span class="admin-role-badge" style="color: #00F0FF; font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">Expert</span>
+        </div>
+        <div class="admin-avatar-initials">MV</div>
+
+        <!-- Professional Profile Dropdown (Role: Expert) -->
+        <div class="admin-profile-dropdown" id="adminProfileDropdown">
+          <div class="profile-card-header">
+            <div class="profile-card-avatar">MV</div>
+            <div class="profile-card-info">
+              <div class="profile-card-name" id="adminDropdownUserName">Marcus Vance</div>
+              <div class="profile-card-email" id="adminDropdownUserEmail">admin.vance@gmail.com</div>
+              <div class="profile-card-role-badge">
+                <span class="role-dot"></span>
+                <span class="role-text">Role: Expert</span>
+              </div>
+            </div>
+          </div>
+          <div class="profile-card-divider"></div>
+          <div class="profile-card-actions">
+            <a href="../login.html" class="profile-action-link logout-action admin-logout-btn">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+              <span>Sign Out</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="admin-content-area">
+      <!-- SECTION 1: INVENTORY OVERVIEW METRICS -->
+      <section class="admin-stats-grid reveal-on-scroll">
+        <div class="admin-stat-tile">
+          <span class="admin-stat-label">Total SKUs in Catalog</span>
+          <span class="admin-stat-value" style="color: #00F0FF;">1,420</span>
+          <span class="admin-stat-delta">+85 added this month</span>
+        </div>
+        <div class="admin-stat-tile">
+          <span class="admin-stat-label">Digital License Keys</span>
+          <span class="admin-stat-value">94,200</span>
+          <span class="admin-stat-delta">Steam, Epic, Riot direct pool</span>
+        </div>
+        <div class="admin-stat-tile">
+          <span class="admin-stat-label">Physical Hardware Units</span>
+          <span class="admin-stat-value">4,810</span>
+          <span class="admin-stat-delta">GPUs, consoles &amp; chairs</span>
+        </div>
+        <div class="admin-stat-tile">
+          <span class="admin-stat-label">Low Stock Alerts</span>
+          <span class="admin-stat-value" style="color: #FF3B30;">3</span>
+          <span class="admin-stat-delta">PS5 Pro, RTX 4090 OC</span>
+        </div>
+      </section>
+
+      <!-- SECTION 2: PRODUCT CATEGORY PIE & PRODUCT PERFORMANCE BAR -->
+      <div class="duo-cards-grid" style="display: grid; grid-template-columns: 1fr 1.4fr; gap: 2rem;">
+        <!-- Category Distribution Pie -->
+        <section class="admin-panel reveal-on-scroll">
+          <div class="admin-panel-header">
+            <div>
+              <h3 class="admin-panel-title">CATEGORY DISTRIBUTION</h3>
+              <p style="font-size: 0.82rem; color: #7A8996;">Share across 1,420 catalog SKUs</p>
+            </div>
+          </div>
+          <div id="category-distribution-pie" style="width: 100%; min-height: 220px;"></div>
+        </section>
+
+        <!-- Product Performance Bar Chart -->
+        <section class="admin-panel reveal-on-scroll">
+          <div class="admin-panel-header">
+            <div>
+              <h3 class="admin-panel-title">PRODUCT VELOCITY BY VOLUME</h3>
+              <p style="font-size: 0.82rem; color: #7A8996;">Units moved across top 5 categories this quarter</p>
+            </div>
+            <span class="admin-security-pill">Real-time Sync</span>
+          </div>
+          <div id="product-performance-bar" style="width: 100%; min-height: 220px;"></div>
+        </section>
+      </div>
+
+      <!-- SECTION 3: BEST-SELLING GAMES GALLERY -->
+      <section class="admin-panel reveal-on-scroll">
+        <div class="admin-panel-header">
+          <div>
+            <h3 class="admin-panel-title">BEST-SELLING GAMES GALLERY</h3>
+            <p style="font-size: 0.82rem; color: #7A8996;">Top 6 revenue drivers in digital marketplace</p>
+          </div>
+          <span style="color: var(--accent-lime); font-size: 0.85rem; font-weight: 700;">Gross $1.4M+ Combined</span>
+        </div>
+        <div class="game-gallery-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;">
+          <!-- Card 1 -->
+          <div class="game-gallery-card" style="background-color: #080B0F; border: 1px solid #1A222D; border-radius: var(--radius-md); overflow: hidden;">
+            <img src="../assets/images/shortlist-elden-ring.webp" alt="Elden Ring" style="width: 100%; height: 160px; object-fit: cover;">
+            <div style="padding: 1rem;">
+              <h4 style="font-size: 1rem; color: #FFF; margin-bottom: 0.2rem;">Elden Ring: Shadow</h4>
+              <p style="font-size: 0.8rem; color: #00F0FF; font-weight: 700;">18,400 Units &bull; $1,103,816</p>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="game-gallery-card" style="background-color: #080B0F; border: 1px solid #1A222D; border-radius: var(--radius-md); overflow: hidden;">
+            <img src="../assets/images/shortlist-cyberpunk.webp" alt="Cyberpunk" style="width: 100%; height: 160px; object-fit: cover;">
+            <div style="padding: 1rem;">
+              <h4 style="font-size: 1rem; color: #FFF; margin-bottom: 0.2rem;">Cyberpunk 2077</h4>
+              <p style="font-size: 0.8rem; color: #00F0FF; font-weight: 700;">14,200 Units &bull; $638,858</p>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="game-gallery-card" style="background-color: #080B0F; border: 1px solid #1A222D; border-radius: var(--radius-md); overflow: hidden;">
+            <img src="../assets/images/shortlist-forza.webp" alt="Forza" style="width: 100%; height: 160px; object-fit: cover;">
+            <div style="padding: 1rem;">
+              <h4 style="font-size: 1rem; color: #FFF; margin-bottom: 0.2rem;">Forza Horizon 5</h4>
+              <p style="font-size: 0.8rem; color: #00F0FF; font-weight: 700;">11,800 Units &bull; $589,882</p>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="game-gallery-card" style="background-color: #080B0F; border: 1px solid #1A222D; border-radius: var(--radius-md); overflow: hidden;">
+            <img src="../assets/images/shortlist-cs2.webp" alt="CS2" style="width: 100%; height: 160px; object-fit: cover;">
+            <div style="padding: 1rem;">
+              <h4 style="font-size: 1rem; color: #FFF; margin-bottom: 0.2rem;">Counter-Strike 2</h4>
+              <p style="font-size: 0.8rem; color: #00F0FF; font-weight: 700;">22,900 Prime Upgrades</p>
+            </div>
+          </div>
+
+          <!-- Card 5 -->
+          <div class="game-gallery-card" style="background-color: #080B0F; border: 1px solid #1A222D; border-radius: var(--radius-md); overflow: hidden;">
+            <img src="../assets/images/game-blackmyth.webp" alt="Black Myth" style="width: 100%; height: 160px; object-fit: cover;">
+            <div style="padding: 1rem;">
+              <h4 style="font-size: 1rem; color: #FFF; margin-bottom: 0.2rem;">Black Myth: Wukong</h4>
+              <p style="font-size: 0.8rem; color: #00F0FF; font-weight: 700;">16,500 Units &bull; $989,835</p>
+            </div>
+          </div>
+
+          <!-- Card 6 -->
+          <div class="game-gallery-card" style="background-color: #080B0F; border: 1px solid #1A222D; border-radius: var(--radius-md); overflow: hidden;">
+            <img src="../assets/images/game-starfield.webp" alt="Starfield" style="width: 100%; height: 160px; object-fit: cover;">
+            <div style="padding: 1rem;">
+              <h4 style="font-size: 1rem; color: #FFF; margin-bottom: 0.2rem;">Starfield</h4>
+              <p style="font-size: 0.8rem; color: #00F0FF; font-weight: 700;">9,800 Units &bull; $685,902</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 4: INVENTORY STATISTICS & AUDIT LOG -->
+      <section class="admin-panel reveal-on-scroll">
+        <div class="admin-panel-header">
+          <h3 class="admin-panel-title">WAREHOUSE SKU AUDIT LOG</h3>
+          <a href="../404.html" class="btn btn-primary" style="font-size: 0.8rem; padding: 0.4rem 0.8rem; text-decoration: none; display: inline-block;">+ Register New SKU</a>
+        </div>
+        <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>SKU NUMBER</th>
+              <th>NAME</th>
+              <th>CATEGORY</th>
+              <th>REMAINING STOCK</th>
+              <th>REORDER THRESHOLD</th>
+              <th>STATUS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="color: #00F0FF; font-weight: 700;">SKU-GPU-4090</td>
+              <td style="color: #FFF;">GeForce RTX 4090 OC Titan 24GB</td>
+              <td>Hardware</td>
+              <td>14 Units</td>
+              <td>20 Units</td>
+              <td><span style="color: #FF3B30; font-weight: 700;">Low Stock</span></td>
+            </tr>
+            <tr>
+              <td style="color: #00F0FF; font-weight: 700;">SKU-CON-PS5P</td>
+              <td style="color: #FFF;">PlayStation 5 Pro 2TB Console</td>
+              <td>Console</td>
+              <td>8 Units</td>
+              <td>25 Units</td>
+              <td><span style="color: #FF3B30; font-weight: 700;">Critical Low</span></td>
+            </tr>
+            <tr>
+              <td style="color: #00F0FF; font-weight: 700;">SKU-PER-APEX</td>
+              <td style="color: #FFF;">CyberKey Apex Pro Hall-Effect</td>
+              <td>Peripherals</td>
+              <td>420 Units</td>
+              <td>50 Units</td>
+              <td><span style="color: var(--accent-lime); font-weight: 700;">Optimal</span></td>
+            </tr>
+            <tr>
+              <td style="color: #00F0FF; font-weight: 700;">SKU-DIG-ERDLC</td>
+              <td style="color: #FFF;">Elden Ring: Shadow of the Erdtree</td>
+              <td>Digital License</td>
+              <td>8,540 Keys</td>
+              <td>500 Keys</td>
+              <td><span style="color: var(--accent-lime); font-weight: 700;">Abundant</span></td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+    <script src="../js/lenis.min.js"></script>
+    <script src="../js/gsap.min.js"></script>
+    <script src="../js/ScrollTrigger.min.js"></script>
+  <script src="../js/smooth-scroll.js"></script>
+  <script src="../js/main.js"></script>
+<script src="../js/charts.js"></script>
+  <script src="../js/admin.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Category Distribution Pie
+      StacklyCharts.createDonutChart('category-distribution-pie', [
+        { label: 'PC & Console Games', value: 780, color: '#00F0FF' },
+        { label: 'Hardware & GPUs', value: 240, color: '#00FF87' },
+        { label: 'Peripherals & Audio', value: 280, color: '#FF7700' },
+        { label: 'Consoles & Handhelds', value: 120, color: '#9D4EDD' }
+      ], { size: 180, centerText: '1,420', centerLabel: 'SKUs' });
+
+      // Product Performance Bar Chart (Units in thousands)
+      StacklyCharts.createBarChart('product-performance-bar', [
+        { label: 'RPG Titles', value: 34 },
+        { label: 'FPS Passes', value: 48 },
+        { label: 'Keyboards', value: 18 },
+        { label: 'Gaming Mice', value: 24 },
+        { label: 'Headsets', value: 16 }
+      ], { prefix: '', barColor: '#00F0FF', height: 210 });
+    });
+  </script>
+</body>
+</html>
+

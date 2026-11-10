@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Revenue Intelligence — Stackly Command Center</title>
+  <link rel="icon" type="image/webp" href="../assets/logos/stackly-favicon.webp">
+  
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/admin-dashboard.css">
+<link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body class="admin-layout-body">
+
+  <!-- SIDEBAR BACKDROP OVERLAY -->
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <!-- ADMIN SIDEBAR -->
+  <aside class="admin-sidebar" id="adminSidebar">
+    <div>
+      <div class="admin-brand-header">
+        <a href="dashboard.html" title="Dashboard Home">
+          <img src="../assets/logos/stackly-logo.webp" alt="Stackly Admin" class="admin-brand-logo">
+        </a>
+        <button class="admin-sidebar-close-btn" id="adminSidebarCloseBtn" aria-label="Close navigation drawer" title="Close Menu">&times;</button>
+        <span class="admin-system-tag">
+          <span style="width: 6px; height: 6px; border-radius: 50%; background-color: #00F0FF; display: inline-block;"></span>
+          Command Center v3.8
+        </span>
+      </div>
+
+      <ul class="admin-nav-list">
+        <li>
+          <a href="dashboard.html" class="admin-nav-link">
+            <svg class="admin-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            <span>Command Overview</span>
+          </a>
+        </li>
+        <li>
+          <a href="inventory.html" class="admin-nav-link">
+            <svg class="admin-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+            <span>Game Inventory</span>
+          </a>
+        </li>
+        <li>
+          <a href="orders.html" class="admin-nav-link">
+            <svg class="admin-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+            <span>Order Intelligence</span>
+          </a>
+        </li>
+        <li>
+          <a href="players.html" class="admin-nav-link">
+            <svg class="admin-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            <span>Player Insights</span>
+          </a>
+        </li>
+        <li>
+          <a href="revenue.html" class="admin-nav-link active">
+            <svg class="admin-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+            <span>Revenue Intelligence</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="admin-logout-wrap">
+      <button class="admin-logout-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+        <span>Sign Out</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN VIEW -->
+  <div class="admin-main-wrapper">
+    <header class="admin-topbar">
+      <div class="admin-topbar-left">
+                <button class="admin-hamburger-btn" id="adminHamburgerBtn" aria-label="Open Admin Menu" title="Open Admin Menu">
+          <span class="dash-hamburger-line"></span>
+          <span class="dash-hamburger-line"></span>
+          <span class="dash-hamburger-line"></span>
+        </button>
+        <div class="admin-page-title-wrap">
+          <h2 class="admin-page-title">
+            <span class="title-full">REVENUE INTELLIGENCE & P&L METRICS</span>
+            <span class="title-short">REVENUE</span>
+          </h2>
+          <span class="admin-security-pill">FY 2026 Financial Audit</span>
+        </div>
+      </div>
+
+      <div class="admin-user-profile" id="adminProfileBtn" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" title="View Profile">
+        <div class="admin-meta-info" style="text-align: right;">
+          <span class="admin-full-name">Marcus Vance</span>
+          <span class="admin-role-badge" style="color: #00F0FF; font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">Expert</span>
+        </div>
+        <div class="admin-avatar-initials">MV</div>
+
+        <!-- Professional Profile Dropdown (Role: Expert) -->
+        <div class="admin-profile-dropdown" id="adminProfileDropdown">
+          <div class="profile-card-header">
+            <div class="profile-card-avatar">MV</div>
+            <div class="profile-card-info">
+              <div class="profile-card-name" id="adminDropdownUserName">Marcus Vance</div>
+              <div class="profile-card-email" id="adminDropdownUserEmail">admin.vance@gmail.com</div>
+              <div class="profile-card-role-badge">
+                <span class="role-dot"></span>
+                <span class="role-text">Role: Expert</span>
+              </div>
+            </div>
+          </div>
+          <div class="profile-card-divider"></div>
+          <div class="profile-card-actions">
+            <a href="../login.html" class="profile-action-link logout-action admin-logout-btn">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+              <span>Sign Out</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="admin-content-area">
+      <!-- SECTION 1: REVENUE STATS GRID -->
+      <section class="admin-stats-grid reveal-on-scroll">
+        <div class="admin-stat-tile">
+          <span class="admin-stat-label">Gross Revenue YTD</span>
+          <span class="admin-stat-value" style="color: #00F0FF;">$4,892,400</span>
+          <span class="admin-stat-delta">+32.4% vs FY 2025</span>
+        </div>
+        <div class="admin-stat-tile">
+          <span class="admin-stat-label">Net Operating Margin</span>
+          <span class="admin-stat-value" style="color: var(--accent-lime);">28.6%</span>
+          <span class="admin-stat-delta">$1,399,226 Net Operating Profit</span>
+        </div>
+        <div class="admin-stat-tile">
+          <span class="admin-stat-label">Digital License Margins</span>
+          <span class="admin-stat-value">44.2%</span>
+          <span class="admin-stat-delta">Direct publisher API contracts</span>
+        </div>
+        <div class="admin-stat-tile">
+          <span class="admin-stat-label">Hardware Hardware Margins</span>
+          <span class="admin-stat-value">19.8%</span>
+          <span class="admin-stat-delta">Factory direct distribution</span>
+        </div>
+      </section>
+
+      <!-- SECTION 2: MONTHLY REVENUE & REVENUE DISTRIBUTION PIE -->
+      <div class="duo-cards-grid" style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 2rem;">
+        <!-- Monthly Revenue Line Graph -->
+        <section class="admin-panel reveal-on-scroll">
+          <div class="admin-panel-header">
+            <div>
+              <h3 class="admin-panel-title">MONTHLY REVENUE VELOCITY ($ USD)</h3>
+              <p style="font-size: 0.82rem; color: #7A8996;">Monthly revenue trajectory through Q1 - Q4 2026</p>
+            </div>
+            <span class="admin-security-pill">Peak: Oct ($785K)</span>
+          </div>
+          <div id="revenue-velocity-line" style="width: 100%; min-height: 220px;"></div>
+        </section>
+
+        <!-- Revenue Distribution Pie -->
+        <section class="admin-panel reveal-on-scroll">
+          <div class="admin-panel-header">
+            <div>
+              <h3 class="admin-panel-title">REVENUE SOURCE CONTRIBUTION</h3>
+              <p style="font-size: 0.82rem; color: #7A8996;">Total income channel breakdown</p>
+            </div>
+          </div>
+          <div id="revenue-channel-pie" style="width: 100%; min-height: 220px;"></div>
+        </section>
+      </div>
+
+      <!-- SECTION 3: YEARLY REVENUE COMPARISON BAR CHART -->
+      <section class="admin-panel reveal-on-scroll">
+        <div class="admin-panel-header">
+          <div>
+            <h3 class="admin-panel-title">YEAR-OVER-YEAR PERFORMANCE COMPARISON</h3>
+            <p style="font-size: 0.82rem; color: #7A8996;">Annual revenue volume from 2023 to 2026 (Projected vs Actual)</p>
+          </div>
+          <span style="font-size: 0.85rem; color: var(--accent-lime); font-weight: 700;">+140% 3-Year CAGR</span>
+        </div>
+        <div id="yearly-comparison-bar" style="width: 100%; min-height: 220px;"></div>
+      </section>
+
+      <!-- SECTION 4: BEST-PERFORMING PRODUCTS REVENUE LEDGER -->
+      <section class="admin-panel reveal-on-scroll">
+        <div class="admin-panel-header">
+          <h3 class="admin-panel-title">TOP REVENUE GENERATING ASSETS</h3>
+          <span style="font-size: 0.82rem; color: #7A8996;">Gross Sales &amp; Unit Economics</span>
+        </div>
+        <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>PRODUCT NAME</th>
+              <th>CATEGORY</th>
+              <th>UNITS SOLD</th>
+              <th>UNIT PRICE</th>
+              <th>GROSS SALES</th>
+              <th>PROFIT MARGIN</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="color: #FFF; font-weight: 700;">Elden Ring: Shadow of the Erdtree</td>
+              <td>Digital Game</td>
+              <td>18,400</td>
+              <td>$59.99</td>
+              <td style="color: #00F0FF; font-weight: 700;">$1,103,816</td>
+              <td><span style="color: var(--accent-lime); font-weight: 700;">46.2%</span></td>
+            </tr>
+            <tr>
+              <td style="color: #FFF; font-weight: 700;">GeForce RTX 4090 Titan OC</td>
+              <td>Hardware</td>
+              <td>610</td>
+              <td>$1,599.99</td>
+              <td style="color: #00F0FF; font-weight: 700;">$975,993</td>
+              <td><span style="color: var(--accent-lime); font-weight: 700;">21.4%</span></td>
+            </tr>
+            <tr>
+              <td style="color: #FFF; font-weight: 700;">Cyberpunk 2077: Ultimate Edition</td>
+              <td>Digital Game</td>
+              <td>14,200</td>
+              <td>$44.99</td>
+              <td style="color: #00F0FF; font-weight: 700;">$638,858</td>
+              <td><span style="color: var(--accent-lime); font-weight: 700;">42.8%</span></td>
+            </tr>
+            <tr>
+              <td style="color: #FFF; font-weight: 700;">PlayStation 5 Pro 2TB Bundle</td>
+              <td>Console</td>
+              <td>840</td>
+              <td>$699.99</td>
+              <td style="color: #00F0FF; font-weight: 700;">$587,991</td>
+              <td><span style="color: var(--accent-lime); font-weight: 700;">18.5%</span></td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+    <script src="../js/lenis.min.js"></script>
+    <script src="../js/gsap.min.js"></script>
+    <script src="../js/ScrollTrigger.min.js"></script>
+  <script src="../js/smooth-scroll.js"></script>
+  <script src="../js/main.js"></script>
+<script src="../js/charts.js"></script>
+  <script src="../js/admin.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Monthly Revenue Line Chart
+      StacklyCharts.createLineChart('revenue-velocity-line', [
+        { label: 'Jan', value: 310 },
+        { label: 'Feb', value: 345 },
+        { label: 'Mar', value: 390 },
+        { label: 'Apr', value: 420 },
+        { label: 'May', value: 480 },
+        { label: 'Jun', value: 520 },
+        { label: 'Jul', value: 580 },
+        { label: 'Aug', value: 640 },
+        { label: 'Sep', value: 690 },
+        { label: 'Oct', value: 785 }
+      ], { prefix: '$', lineColor: '#00F0FF', height: 210 });
+
+      // 2. Revenue Channel Pie Chart
+      StacklyCharts.createDonutChart('revenue-channel-pie', [
+        { label: 'Digital Game Keys', value: 2410, color: '#00FF87' },
+        { label: 'GPU & PC Hardware', value: 1420, color: '#00F0FF' },
+        { label: 'Consoles & Handhelds', value: 680, color: '#FF7700' },
+        { label: 'Peripherals & Audio', value: 382, color: '#9D4EDD' }
+      ], { size: 180, centerText: '$4.9M', centerLabel: 'Revenue' });
+
+      // 3. Yearly Revenue Comparison Bar Chart ($ in Millions)
+      StacklyCharts.createBarChart('yearly-comparison-bar', [
+        { label: '2023', value: 1.4 },
+        { label: '2024', value: 2.3 },
+        { label: '2025', value: 3.7 },
+        { label: '2026 (YTD)', value: 4.9 }
+      ], { prefix: '$', barColor: '#00F0FF', height: 210 });
+    });
+  </script>
+</body>
+</html>
+

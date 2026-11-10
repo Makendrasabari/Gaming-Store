@@ -1,0 +1,734 @@
+/* ==========================================================================
+   STACKLY GAMING STORE - CINEMATIC GUN-SHOOTING PRELOADER (preloader.css)
+   Futuristic Gaming Weapon, Mechanical Slide Unfold, Muzzle Flash Recoil & Telemetry
+   ========================================================================== */
+
+:root {
+  --preloader-bg: #040608;
+  --preloader-green: #00FF87;
+  --preloader-green-glow: rgba(0, 255, 135, 0.4);
+  --preloader-green-intense: rgba(0, 255, 135, 0.85);
+  --preloader-gun-chassis: #121820;
+  --preloader-hud-border: rgba(0, 255, 135, 0.25);
+}
+
+#gaming-preloader {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--preloader-bg);
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  user-select: none;
+  pointer-events: all;
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+              visibility 0.65s;
+  will-change: opacity, filter, transform;
+}
+
+#gaming-preloader.fade-out {
+  opacity: 0;
+  filter: blur(10px) brightness(1.1);
+  transform: scale(1.03);
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Ambient Cyber Atmosphere */
+.preloader-backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.preloader-cyber-grid {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(to right, rgba(0, 255, 135, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 255, 135, 0.035) 1px, transparent 1px);
+  background-size: 50px 50px;
+  mask-image: radial-gradient(circle at 50% 50%, black 40%, transparent 80%);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, black 40%, transparent 80%);
+  opacity: 0.8;
+}
+
+.preloader-ambient-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 750px;
+  height: 400px;
+  background: radial-gradient(ellipse at center, rgba(0, 255, 135, 0.18) 0%, rgba(0, 255, 135, 0.05) 50%, transparent 75%);
+  filter: blur(60px);
+  opacity: 0.7;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.preloader-ambient-glow.glow-charged {
+  opacity: 1;
+  filter: blur(50px);
+  background: radial-gradient(ellipse at center, rgba(0, 255, 135, 0.32) 0%, rgba(0, 255, 135, 0.1) 50%, transparent 75%);
+}
+
+/* Screen Recoil Shake Layer */
+.preloader-shake-layer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  will-change: transform;
+}
+
+.preloader-shake-layer.impact {
+  animation: screenRecoilShake 0.35s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes screenRecoilShake {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  15% { transform: translate3d(-10px, -6px, 0) scale(1.015); }
+  30% { transform: translate3d(8px, 4px, 0) scale(1.008); }
+  45% { transform: translate3d(-5px, 2px, 0) scale(1.004); }
+  60% { transform: translate3d(3px, -2px, 0) scale(1.002); }
+  80% { transform: translate3d(-1px, 1px, 0) scale(1.001); }
+  100% { transform: translate3d(0, 0, 0) scale(1); }
+}
+
+/* Muzzle Flash Overlay */
+.preloader-flash-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 68% 50%, rgba(255, 255, 255, 0.9) 0%, rgba(0, 255, 135, 0.7) 30%, transparent 70%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 10;
+  mix-blend-mode: screen;
+  transition: opacity 0.05s ease-out;
+}
+
+.preloader-flash-overlay.flashing {
+  opacity: 1;
+  animation: flashDecay 0.28s cubic-bezier(0.1, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes flashDecay {
+  0% { opacity: 0.95; }
+  25% { opacity: 0.6; }
+  100% { opacity: 0; }
+}
+
+/* Core Container */
+.preloader-core {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 900px;
+  padding: 0 20px;
+  z-index: 5;
+}
+
+/* Tactical HUD Reticle Framing */
+.preloader-hud-bracket {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--preloader-green);
+  opacity: 0.45;
+  pointer-events: none;
+}
+.bracket-top-left { top: -20px; left: 10px; border-right: none; border-bottom: none; }
+.bracket-top-right { top: -20px; right: 10px; border-left: none; border-bottom: none; }
+.bracket-bottom-left { bottom: -20px; left: 10px; border-right: none; border-top: none; }
+.bracket-bottom-right { bottom: -20px; right: 10px; border-left: none; border-top: none; }
+
+/* Brand Logo Section */
+.preloader-logo-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 24px;
+  opacity: 0;
+  transform: translateY(-16px);
+  animation: logoEntrance 0.8s 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes logoEntrance {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.preloader-brand-logo {
+  height: 56px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 0 18px rgba(0, 255, 135, 0.5));
+}
+
+.preloader-tagline {
+  font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 5px;
+  color: var(--preloader-green);
+  text-transform: uppercase;
+  margin-top: 8px;
+  opacity: 0.85;
+}
+
+/* Gun Viewport and 3D Weapon Rig */
+.preloader-weapon-viewport {
+  position: relative;
+  width: 100%;
+  max-width: 680px;
+  height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1200px;
+}
+
+.gun-rig {
+  position: relative;
+  width: 580px;
+  height: 290px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+  opacity: 0;
+  transform: translate3d(0, 45px, -80px) rotateX(14deg) scale(0.88);
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.65s ease;
+  will-change: transform, filter;
+}
+
+/* Gun Entrance State */
+.gun-rig.gun-entered {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) rotateX(0deg) scale(1);
+}
+
+/* Weapon Art Asset */
+.gun-asset {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 25px rgba(0, 255, 135, 0.2));
+  z-index: 2;
+  transition: filter 0.3s ease;
+}
+
+/* Mechanical Slide Unfold Mechanism */
+.gun-mechanical-slide {
+  position: absolute;
+  top: 38%;
+  left: 22%;
+  width: 140px;
+  height: 38px;
+  border-radius: 4px;
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.95) 100%);
+  border: 1px solid rgba(0, 255, 135, 0.35);
+  box-shadow: inset 0 0 10px rgba(0, 255, 135, 0.2), 0 4px 12px rgba(0, 0, 0, 0.7);
+  z-index: 3;
+  transform: translate3d(0, 0, 0);
+  transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform;
+  overflow: hidden;
+}
+
+.gun-mechanical-slide::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--preloader-green), transparent);
+}
+
+.gun-slide-vents {
+  display: flex;
+  gap: 6px;
+  padding: 8px 12px;
+  height: 100%;
+  align-items: center;
+}
+
+.gun-slide-vents span {
+  display: block;
+  width: 3px;
+  height: 18px;
+  background: rgba(0, 255, 135, 0.4);
+  transform: skewX(-20deg);
+  border-radius: 1px;
+}
+
+/* Slide Opened / Mechanical Unfold State */
+.gun-rig.gun-opened .gun-mechanical-slide {
+  transform: translate3d(-32px, 0, 0);
+}
+
+/* Plasma Core Chamber (Revealed when Slide pulls back) */
+.gun-plasma-chamber {
+  position: absolute;
+  top: 40%;
+  left: 26%;
+  width: 70px;
+  height: 24px;
+  border-radius: 3px;
+  background: radial-gradient(ellipse at center, #ffffff 0%, #00FF87 50%, rgba(0, 255, 135, 0.2) 100%);
+  box-shadow: 0 0 25px var(--preloader-green), inset 0 0 8px #ffffff;
+  z-index: 1;
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gun-rig.gun-opened .gun-plasma-chamber {
+  opacity: 1;
+  transform: scale(1);
+  animation: plasmaChamberPulse 0.4s ease-in-out infinite alternate;
+}
+
+@keyframes plasmaChamberPulse {
+  0% { filter: drop-shadow(0 0 8px #00FF87) brightness(1); }
+  100% { filter: drop-shadow(0 0 22px #00FF87) brightness(1.4); }
+}
+
+/* Holographic Optical Sight */
+.gun-holo-sight {
+  position: absolute;
+  top: 18%;
+  left: 36%;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid var(--preloader-green);
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--preloader-green);
+  opacity: 0;
+  z-index: 4;
+  transform: scale(0.5);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.gun-holo-sight::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  background: #ffffff;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 6px #00FF87;
+}
+
+.gun-rig.gun-opened .gun-holo-sight,
+.gun-rig.gun-recoil .gun-holo-sight {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Firing Recoil State */
+.gun-rig.gun-recoil {
+  transform: translate3d(-38px, -6px, 15px) rotate(-8deg) scale(1.02);
+  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 35px rgba(0, 255, 135, 0.6));
+  transition: transform 0.06s cubic-bezier(0.05, 0.9, 0.2, 1);
+}
+
+/* Post-Shot Settled State */
+.gun-rig.gun-settled {
+  transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.gun-rig.gun-settled .gun-mechanical-slide {
+  transform: translate3d(0, 0, 0);
+  transition: transform 0.25s cubic-bezier(0.3, 1, 0.4, 1);
+}
+
+.gun-rig.gun-settled .gun-plasma-chamber {
+  opacity: 0.3;
+  transform: scale(0.7);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Muzzle Blast Effect (Positioned at Gun Barrel) */
+.gun-muzzle-blast {
+  position: absolute;
+  top: 41%;
+  right: -25px;
+  width: 140px;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(0, -50%) scale(0.2);
+  z-index: 5;
+}
+
+.gun-muzzle-blast.blast-active {
+  animation: muzzleBlastBurst 0.28s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+}
+
+@keyframes muzzleBlastBurst {
+  0% {
+    opacity: 1;
+    transform: translate(0, -50%) scale(0.3);
+  }
+  30% {
+    opacity: 1;
+    transform: translate(20px, -50%) scale(1.25);
+  }
+  70% {
+    opacity: 0.7;
+    transform: translate(35px, -50%) scale(1.4);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(45px, -50%) scale(1.6);
+  }
+}
+
+.blast-star {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, #ffffff 0%, #00FF87 35%, rgba(0, 255, 135, 0.4) 60%, transparent 75%);
+  border-radius: 50%;
+  filter: drop-shadow(0 0 20px #00FF87);
+}
+
+.blast-ray-horizontal {
+  position: absolute;
+  width: 240px;
+  height: 8px;
+  background: linear-gradient(90deg, #ffffff, #00FF87, transparent);
+  left: 20px;
+  box-shadow: 0 0 15px #00FF87;
+  border-radius: 4px;
+}
+
+.blast-ray-vertical {
+  position: absolute;
+  width: 8px;
+  height: 120px;
+  background: linear-gradient(180deg, transparent, #00FF87, #ffffff, #00FF87, transparent);
+  box-shadow: 0 0 15px #00FF87;
+  border-radius: 4px;
+}
+
+/* Expanding Shockwave Ring */
+.gun-shockwave-ring {
+  position: absolute;
+  top: 41%;
+  right: 15px;
+  width: 60px;
+  height: 60px;
+  border: 2px solid rgba(0, 255, 135, 0.9);
+  border-radius: 50%;
+  transform: translate(0, -50%) scale(0.2);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.gun-shockwave-ring.shockwave-active {
+  animation: shockwaveExpand 0.4s cubic-bezier(0.15, 0.85, 0.35, 1) forwards;
+}
+
+@keyframes shockwaveExpand {
+  0% {
+    opacity: 1;
+    transform: translate(0, -50%) scale(0.3);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(30px, -50%) scale(3.5);
+    border-color: rgba(0, 255, 135, 0);
+  }
+}
+
+/* Plasma Tracer Ray */
+.gun-plasma-tracer {
+  position: absolute;
+  top: 41%;
+  left: 85%;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #ffffff 0%, #00FF87 40%, rgba(0, 255, 135, 0.1) 100%);
+  box-shadow: 0 0 16px #00FF87, 0 0 30px #00FF87;
+  border-radius: 3px;
+  opacity: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.gun-plasma-tracer.tracer-active {
+  animation: plasmaTracerFire 0.32s cubic-bezier(0.1, 0.8, 0.25, 1) forwards;
+}
+
+@keyframes plasmaTracerFire {
+  0% {
+    width: 20px;
+    opacity: 1;
+    transform: translateX(0);
+  }
+  40% {
+    width: 320px;
+    opacity: 1;
+  }
+  100% {
+    width: 480px;
+    opacity: 0;
+    transform: translateX(200px);
+  }
+}
+
+/* Ejection Port Spent Energy Spark */
+.plasma-eject-particle {
+  position: absolute;
+  top: 36%;
+  left: 26%;
+  width: 7px;
+  height: 7px;
+  background: #00FF87;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #00FF87, 0 0 16px #ffffff;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 6;
+}
+
+.plasma-eject-particle.eject-active {
+  animation: ejectSpark 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes ejectSpark {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+  60% {
+    opacity: 0.9;
+    transform: translate(-35px, -55px) scale(0.85);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-65px, -25px) scale(0.3);
+  }
+}
+
+/* Sleek Loading Meter & Telemetry Readout */
+.preloader-meter-wrap {
+  width: 100%;
+  max-width: 460px;
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 5;
+}
+
+.preloader-meter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  font-size: 11px;
+  letter-spacing: 2px;
+  font-weight: 600;
+  color: #94A3B8;
+}
+
+.preloader-telemetry-text {
+  color: var(--preloader-green);
+  text-shadow: 0 0 8px rgba(0, 255, 135, 0.5);
+  font-weight: 700;
+}
+
+.preloader-percent-readout {
+  color: #FFFFFF;
+  font-family: 'Space Grotesk', monospace;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.preloader-meter-track {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(0, 255, 135, 0.15);
+}
+
+.preloader-meter-fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #059669 0%, var(--preloader-green) 80%, #ffffff 100%);
+  box-shadow: 0 0 12px var(--preloader-green);
+  border-radius: 4px;
+  transition: width 0.08s linear;
+  position: relative;
+}
+
+.preloader-meter-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 8px;
+  height: 100%;
+  background: #ffffff;
+  box-shadow: 0 0 8px #ffffff, 0 0 16px var(--preloader-green);
+}
+
+/* Status Indicator Footer */
+.preloader-status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: #64748B;
+  text-transform: uppercase;
+}
+
+.preloader-status-dot {
+  width: 6px;
+  height: 6px;
+  background-color: var(--preloader-green);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--preloader-green);
+  animation: statusPulse 1.2s infinite ease-in-out;
+}
+
+@keyframes statusPulse {
+  0%, 100% { opacity: 0.4; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* ==========================================================================
+   Responsive Adaptations
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .preloader-weapon-viewport {
+    height: 240px;
+    max-width: 440px;
+  }
+
+  .gun-rig {
+    width: 420px;
+    height: 210px;
+  }
+
+  .gun-mechanical-slide {
+    width: 105px;
+    height: 28px;
+  }
+
+  .gun-slide-vents span {
+    height: 14px;
+    width: 2.5px;
+  }
+
+  .gun-plasma-chamber {
+    width: 50px;
+    height: 18px;
+  }
+
+  .preloader-brand-logo {
+    height: 38px;
+  }
+
+  .preloader-meter-wrap {
+    max-width: 320px;
+  }
+
+  .preloader-hud-bracket {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .preloader-weapon-viewport {
+    height: 190px;
+    max-width: 320px;
+  }
+
+  .gun-rig {
+    width: 310px;
+    height: 155px;
+  }
+
+  .preloader-brand-logo {
+    height: 32px;
+  }
+
+  .preloader-tagline {
+    font-size: 9px;
+    letter-spacing: 3px;
+  }
+
+  .preloader-meter-wrap {
+    max-width: 270px;
+  }
+}
+
+/* Reduced Motion Mode */
+@media (prefers-reduced-motion: reduce) {
+  #gaming-preloader {
+    transition: opacity 0.3s ease;
+  }
+
+  .preloader-shake-layer.impact {
+    animation: none;
+  }
+
+  .gun-rig {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  .gun-mechanical-slide,
+  .gun-plasma-chamber,
+  .gun-muzzle-blast,
+  .gun-shockwave-ring,
+  .gun-plasma-tracer,
+  .plasma-eject-particle {
+    animation: none !important;
+  }
+}

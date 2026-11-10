@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Player Profile — Stackly Player Hub</title>
+  <link rel="icon" type="image/webp" href="../assets/logos/stackly-favicon.webp">
+  
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/customer-dashboard.css">
+<link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body class="dashboard-layout-body">
+
+  <!-- SIDEBAR BACKDROP OVERLAY -->
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <!-- FIXED SIDEBAR -->
+  <aside class="dashboard-sidebar" id="dashboardSidebar">
+    <div>
+      <div class="sidebar-brand-box">
+        <a href="dashboard.html" title="Dashboard Home">
+          <img src="../assets/logos/stackly-logo.webp" alt="Stackly Gaming" class="sidebar-brand-logo">
+        </a>
+        <button class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Close navigation drawer" title="Close Menu">&times;</button>
+      </div>
+
+      <ul class="sidebar-nav-list">
+        <li>
+          <a href="dashboard.html" class="sidebar-link">
+            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            <span>Player Overview</span>
+          </a>
+        </li>
+        <li>
+          <a href="library.html" class="sidebar-link">
+            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+            <span>Game Library</span>
+          </a>
+        </li>
+        <li>
+          <a href="purchases.html" class="sidebar-link">
+            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+            <span>Purchase Analytics</span>
+          </a>
+        </li>
+        <li>
+          <a href="wishlist.html" class="sidebar-link">
+            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+            <span>Wishlist &amp; Favorites</span>
+          </a>
+        </li>
+        <li>
+          <a href="profile.html" class="sidebar-link active">
+            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <span>Player Profile</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="sidebar-bottom-action">
+      <button class="sidebar-logout-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+        <span>Sign Out</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN VIEW -->
+  <div class="dashboard-main-wrapper">
+    <header class="dashboard-topbar">
+      <div class="dashboard-topbar-left">
+                <button class="dashboard-hamburger-btn" id="dashboardHamburgerBtn" aria-label="Open Navigation Menu" title="Open Navigation">
+          <span class="dash-hamburger-line"></span>
+          <span class="dash-hamburger-line"></span>
+          <span class="dash-hamburger-line"></span>
+        </button>
+        <h2 class="dashboard-page-title">
+          <span class="title-full">PLAYER PROFILE & IDENTITY</span>
+          <span class="title-short">PROFILE</span>
+        </h2>
+      </div>
+
+      <div class="dashboard-user-profile" id="userProfileBtn" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" title="View Profile">
+        <div class="user-meta-info" style="text-align: right;">
+          <span class="user-full-name">Alex Vance</span>
+          <span class="user-role-label">Expert</span>
+        </div>
+        <div class="user-avatar-initials">AV</div>
+
+        <!-- Professional Profile Dropdown (Role: Expert) -->
+        <div class="dashboard-profile-dropdown" id="dashboardProfileDropdown">
+          <div class="profile-card-header">
+            <div class="profile-card-avatar">AV</div>
+            <div class="profile-card-info">
+              <div class="profile-card-name" id="dropdownUserName">Alex Vance</div>
+              <div class="profile-card-email" id="dropdownUserEmail">alex.vance@gmail.com</div>
+              <div class="profile-card-role-badge">
+                <span class="role-dot"></span>
+                <span class="role-text">Role: Expert</span>
+              </div>
+            </div>
+          </div>
+          <div class="profile-card-divider"></div>
+          <div class="profile-card-actions">
+            <a href="../login.html" class="profile-action-link logout-action sidebar-logout-btn">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+              <span>Sign Out</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="dashboard-content-area">
+      <!-- SECTION 1: PLAYER PROFILE OVERVIEW CARD -->
+      <section class="dash-panel reveal-on-scroll" style="background: linear-gradient(135deg, #10161C 0%, #090C0F 100%);">
+        <div style="display: flex; gap: 2rem; align-items: center; flex-wrap: wrap;">
+          <div class="user-avatar-initials" style="width: 84px; height: 84px; font-size: 2.2rem; border-width: 2px;">P</div>
+          <div style="flex-grow: 1;">
+            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.35rem;">
+              <h1 class="user-full-name" style="font-size: 1.8rem; font-family: var(--font-display);">Player</h1>
+              <span class="badge-lime">Stackly Elite Pro</span>
+            </div>
+            <p style="color: var(--text-gray); font-size: 0.9rem;">Member since March 2024 &bull; Verified ID: #STK-849204 &bull; Region: North America West</p>
+          </div>
+          <div style="display: flex; gap: 1rem;">
+            <a href="../404.html" class="btn btn-primary" style="font-size: 0.85rem; text-decoration: none; display: inline-block;">Save Profile</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 2: PERSONAL INFORMATION & SECTION 3: MEMBERSHIP OVERVIEW -->
+      <div class="duo-cards-grid" style="display: grid; grid-template-columns: 1.3fr 1fr; gap: 2rem;">
+        <!-- Split & Join Battlestation Rig Showcase -->
+        <section class="dash-panel reveal-on-scroll split-join-panel">
+          <div class="dash-panel-header split-panel-header">
+            <div class="split-title-group">
+              <span class="status-indicator-live"></span>
+              <h3 class="dash-panel-title">BATTLESTATION RIG // QUANTUM NODE</h3>
+            </div>
+            <div class="split-controls">
+              <button type="button" class="split-toggle-btn" id="splitJoinToggleBtn" title="Click to trigger Split / Join animation">
+                <svg class="split-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3m8-18h3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-3M12 3v18"></path></svg>
+                <span class="split-btn-text">Split View</span>
+              </button>
+              <span class="badge-lime">RTX 4090 Active</span>
+            </div>
+          </div>
+
+          <!-- The Split-and-Join Canvas Stage -->
+          <div class="split-join-stage" id="splitJoinStage">
+            <!-- Underneath Reveal Layer (Holographic HUD / Core Tech visible when image splits open) -->
+            <div class="split-reveal-backdrop">
+              <div class="hud-core-grid"></div>
+              <div class="hud-core-content">
+                <div class="hud-cyber-hex">
+                  <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#00FF87" stroke-width="2"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"></polygon><circle cx="12" cy="12" r="3" fill="#00FF87"></circle></svg>
+                </div>
+                <div class="hud-cyber-meta">
+                  <span class="hud-tag">QUANTUM OVERCLOCK // 5.8 GHz</span>
+                  <h4 class="hud-title">VANGUARD RIG // SYNCHRONIZED</h4>
+                  <p class="hud-desc">Neural ray-tracing pipeline active &bull; Latency 1.2ms &bull; Frame Gen: 165 FPS</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- The Left Slice (Splits to the left) -->
+            <div class="split-slice split-slice-left">
+              <div class="split-slice-inner">
+                <img src="../assets/images/featured-night-city-pathtracing.webp" alt="Stackly Vanguard Rig" class="split-image">
+              </div>
+              <div class="split-edge-beam left-beam"></div>
+            </div>
+
+            <!-- The Right Slice (Splits to the right) -->
+            <div class="split-slice split-slice-right">
+              <div class="split-slice-inner">
+                <img src="../assets/images/featured-night-city-pathtracing.webp" alt="Stackly Vanguard Rig" class="split-image">
+              </div>
+              <div class="split-edge-beam right-beam"></div>
+            </div>
+
+            <!-- Center Seam Indicator (Flashes when joining) -->
+            <div class="split-seam-flash"></div>
+
+            <!-- Ambient Overlay Badges on the unified image -->
+            <div class="split-stage-overlay">
+              <div class="split-chip">
+                <span class="pulse-dot"></span>
+                <span>NEURAL LINK &bull; ULTRA RESOLUTION</span>
+              </div>
+              <span class="split-hint-text">Tap or click to split</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Membership Overview -->
+        <section class="dash-panel reveal-on-scroll">
+          <div class="dash-panel-header">
+            <h3 class="dash-panel-title">MEMBERSHIP OVERVIEW</h3>
+            <span class="badge-lime">Active</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 1rem;">
+            <div style="background-color: #12181E; padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+              <span style="font-size: 0.75rem; color: var(--accent-lime); font-weight: 700; text-transform: uppercase;">Tier Status</span>
+              <h4 style="font-size: 1.2rem; color: #FFF; margin: 0.2rem 0;">Stackly Vanguard Level 5</h4>
+              <p style="font-size: 0.8rem; color: var(--text-gray);">15% instant store discount + early alpha beta access.</p>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-gray);">
+              <span>Next Reward Unlock:</span>
+              <span style="color: var(--accent-lime); font-weight: 700;">850 XP to Level 6</span>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- SECTION 4: GAMING PREFERENCES & SECTION 5: ACCOUNT ACTIVITY GRAPH -->
+      <div class="duo-cards-grid" style="display: grid; grid-template-columns: 1fr 1.3fr; gap: 2rem;">
+        <!-- Gaming Preferences -->
+        <section class="dash-panel reveal-on-scroll">
+          <div class="dash-panel-header">
+            <h3 class="dash-panel-title">GAMING PREFERENCES</h3>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 1rem;">
+            <label style="display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; color: var(--text-gray);">
+              <span>Direct Key Auto-Activation</span>
+              <input type="checkbox" checked style="accent-color: var(--accent-lime); width: 18px; height: 18px;">
+            </label>
+            <label style="display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; color: var(--text-gray);">
+              <span>Esports Tournament Broadcast Alerts</span>
+              <input type="checkbox" checked style="accent-color: var(--accent-lime); width: 18px; height: 18px;">
+            </label>
+            <label style="display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; color: var(--text-gray);">
+              <span>Weekly Hardware Deal Bulletins</span>
+              <input type="checkbox" checked style="accent-color: var(--accent-lime); width: 18px; height: 18px;">
+            </label>
+            <label style="display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; color: var(--text-gray);">
+              <span>Two-Factor Security Authentication</span>
+              <input type="checkbox" checked style="accent-color: var(--accent-lime); width: 18px; height: 18px;">
+            </label>
+          </div>
+        </section>
+
+        <!-- Account Activity Graph -->
+        <section class="dash-panel reveal-on-scroll">
+          <div class="dash-panel-header">
+            <div>
+              <h3 class="dash-panel-title">30-DAY ACCOUNT ACTIVITY</h3>
+              <p style="font-size: 0.82rem; color: var(--text-muted);">Session logins and store activity frequency</p>
+            </div>
+            <span class="badge-lime">100% Security Score</span>
+          </div>
+          <div id="account-activity-chart" style="width: 100%; min-height: 220px;"></div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+    <script src="../js/lenis.min.js"></script>
+    <script src="../js/gsap.min.js"></script>
+    <script src="../js/ScrollTrigger.min.js"></script>
+  <script src="../js/smooth-scroll.js"></script>
+  <script src="../js/main.js"></script>
+<script src="../js/charts.js"></script>
+  <script src="../js/customer.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      StacklyCharts.createLineChart('account-activity-chart', [
+        { label: 'Week 1', value: 12 },
+        { label: 'Week 2', value: 18 },
+        { label: 'Week 3', value: 15 },
+        { label: 'Week 4', value: 24 }
+      ], { lineColor: '#00FF87', height: 210, prefix: '' });
+    });
+  </script>
+</body>
+</html>
+

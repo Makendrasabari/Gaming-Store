@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wishlist &amp; Favorites — Stackly Player Hub</title>
+  <link rel="icon" type="image/webp" href="../assets/logos/stackly-favicon.webp">
+  
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/customer-dashboard.css">
+<link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body class="dashboard-layout-body">
+
+  <!-- SIDEBAR BACKDROP OVERLAY -->
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <!-- FIXED SIDEBAR -->
+  <aside class="dashboard-sidebar" id="dashboardSidebar">
+    <div>
+      <div class="sidebar-brand-box">
+        <a href="dashboard.html" title="Dashboard Home">
+          <img src="../assets/logos/stackly-logo.webp" alt="Stackly Gaming" class="sidebar-brand-logo">
+        </a>
+        <button class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Close navigation drawer" title="Close Menu">&times;</button>
+      </div>
+
+      <ul class="sidebar-nav-list">
+        <li>
+          <a href="dashboard.html" class="sidebar-link">
+            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            <span>Player Overview</span>
+          </a>
+        </li>
+        <li>
+          <a href="library.html" class="sidebar-link">
+            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+            <span>Game Library</span>
+          </a>
+        </li>
+        <li>
+          <a href="purchases.html" class="sidebar-link">
+            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+            <span>Purchase Analytics</span>
+          </a>
+        </li>
+        <li>
+          <a href="wishlist.html" class="sidebar-link active">
+            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+            <span>Wishlist &amp; Favorites</span>
+          </a>
+        </li>
+        <li>
+          <a href="profile.html" class="sidebar-link">
+            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <span>Player Profile</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="sidebar-bottom-action">
+      <button class="sidebar-logout-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+        <span>Sign Out</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN VIEW -->
+  <div class="dashboard-main-wrapper">
+    <header class="dashboard-topbar">
+      <div class="dashboard-topbar-left">
+                <button class="dashboard-hamburger-btn" id="dashboardHamburgerBtn" aria-label="Open Navigation Menu" title="Open Navigation">
+          <span class="dash-hamburger-line"></span>
+          <span class="dash-hamburger-line"></span>
+          <span class="dash-hamburger-line"></span>
+        </button>
+        <h2 class="dashboard-page-title">
+          <span class="title-full">WISHLIST & SAVED GEAR</span>
+          <span class="title-short">WISHLIST</span>
+        </h2>
+      </div>
+
+      <div class="dashboard-user-profile" id="userProfileBtn" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" title="View Profile">
+        <div class="user-meta-info" style="text-align: right;">
+          <span class="user-full-name">Alex Vance</span>
+          <span class="user-role-label">Expert</span>
+        </div>
+        <div class="user-avatar-initials">AV</div>
+
+        <!-- Professional Profile Dropdown (Role: Expert) -->
+        <div class="dashboard-profile-dropdown" id="dashboardProfileDropdown">
+          <div class="profile-card-header">
+            <div class="profile-card-avatar">AV</div>
+            <div class="profile-card-info">
+              <div class="profile-card-name" id="dropdownUserName">Alex Vance</div>
+              <div class="profile-card-email" id="dropdownUserEmail">alex.vance@gmail.com</div>
+              <div class="profile-card-role-badge">
+                <span class="role-dot"></span>
+                <span class="role-text">Role: Expert</span>
+              </div>
+            </div>
+          </div>
+          <div class="profile-card-divider"></div>
+          <div class="profile-card-actions">
+            <a href="../login.html" class="profile-action-link logout-action sidebar-logout-btn">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+              <span>Sign Out</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="dashboard-content-area">
+      <!-- SECTION 1: WISHLIST METRICS -->
+      <section class="stats-cards-row reveal-on-scroll">
+        <div class="dash-stat-card">
+          <span class="dash-stat-label">Saved Items</span>
+          <span class="dash-stat-val" style="color: var(--accent-lime);">14</span>
+          <span class="dash-stat-change">4 on special discount</span>
+        </div>
+        <div class="dash-stat-card">
+          <span class="dash-stat-label">Wishlist Value</span>
+          <span class="dash-stat-val">$2,419.85</span>
+          <span class="dash-stat-change">Total if purchased today</span>
+        </div>
+        <div class="dash-stat-card">
+          <span class="dash-stat-label">Price Alerts Active</span>
+          <span class="dash-stat-val">8</span>
+          <span class="dash-stat-change">Email notification enabled</span>
+        </div>
+        <div class="dash-stat-card">
+          <span class="dash-stat-label">Upcoming Releases Tracked</span>
+          <span class="dash-stat-val" style="color: #00F0FF;">3</span>
+          <span class="dash-stat-change">GTA VI, Civ VII, Doom</span>
+        </div>
+      </section>
+
+      <!-- SECTION 2: WISHLIST DISTRIBUTION PIE & FAVORITE GAMES -->
+      <div class="duo-cards-grid" style="display: grid; grid-template-columns: 1fr 1.3fr; gap: 2rem;">
+        <!-- Pie Chart -->
+        <section class="dash-panel reveal-on-scroll">
+          <div class="dash-panel-header">
+            <div>
+              <h3 class="dash-panel-title">WISHLIST DISTRIBUTION</h3>
+              <p style="font-size: 0.82rem; color: var(--text-muted);">Category split of 14 saved items</p>
+            </div>
+          </div>
+          <div id="wishlist-distribution-pie" style="width: 100%; min-height: 220px;"></div>
+        </section>
+
+        <!-- Saved Favorite Games -->
+        <section class="dash-panel reveal-on-scroll">
+          <div class="dash-panel-header">
+            <h3 class="dash-panel-title">FAVORITE SAVED TITLES</h3>
+            <span class="badge-lime">Price Drop Watch</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 1rem;">
+            <!-- Item 1 -->
+            <div style="display: flex; justify-content: space-between; align-items: center; background-color: #12181E; padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+              <div style="display: flex; gap: 1rem; align-items: center;">
+                <img src="../assets/images/game-gta6.webp" alt="GTA VI" style="width: 55px; height: 55px; border-radius: var(--radius-sm); object-fit: cover;">
+                <div>
+                  <h4 style="font-size: 1rem; color: #FFF;">Grand Theft Auto VI</h4>
+                  <span style="font-size: 0.8rem; color: var(--text-muted);">Rockstar Games &bull; Expected Fall 2026</span>
+                </div>
+              </div>
+              <span class="badge-lime">Tracking Alert</span>
+            </div>
+
+            <!-- Item 2 -->
+            <div style="display: flex; justify-content: space-between; align-items: center; background-color: #12181E; padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+              <div style="display: flex; gap: 1rem; align-items: center;">
+                <img src="../assets/images/game-zelda.webp" alt="Zelda" style="width: 55px; height: 55px; border-radius: var(--radius-sm); object-fit: cover;">
+                <div>
+                  <h4 style="font-size: 1rem; color: #FFF;">Tears of the Kingdom</h4>
+                  <span style="font-size: 0.8rem; color: var(--accent-lime); font-weight: 700;">$69.99</span>
+                </div>
+              </div>
+              <a href="../404.html" class="btn btn-primary" style="padding: 0.45rem 0.9rem; font-size: 0.8rem;">Add to Cart</a>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- SECTION 3: SAVED ACCESSORIES & HARDWARE -->
+      <section class="dash-panel reveal-on-scroll">
+        <div class="dash-panel-header">
+          <div>
+            <h3 class="dash-panel-title">SAVED GAMING ACCESSORIES &amp; RIGS</h3>
+            <p style="font-size: 0.82rem; color: var(--text-muted);">High performance components on your radar</p>
+          </div>
+        </div>
+        <div class="trio-cards-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;">
+          <!-- Card 1: Left -->
+          <div class="trio-card trio-card-left" style="background-color: #12181E; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
+            <img src="../assets/images/shop-gpu.webp" alt="RTX 4090" style="width: 100%; height: 140px; object-fit: cover; border-radius: var(--radius-sm); margin-bottom: 0.75rem;">
+            <h4 style="font-size: 1rem; color: #FFF; margin-bottom: 0.35rem;">GeForce RTX 4090 OC 24GB</h4>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="color: var(--accent-lime); font-weight: 700;">$1,599.99</span>
+              <a href="../404.html" class="btn btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.75rem;">View</a>
+            </div>
+          </div>
+
+          <!-- Card 2: Top -->
+          <div class="trio-card trio-card-top" style="background-color: #12181E; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
+            <img src="../assets/images/shop-monitor.webp" alt="Monitor" style="width: 100%; height: 140px; object-fit: cover; border-radius: var(--radius-sm); margin-bottom: 0.75rem;">
+            <h4 style="font-size: 1rem; color: #FFF; margin-bottom: 0.35rem;">NeoMatrix 34&quot; QD-OLED 240Hz</h4>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="color: var(--accent-lime); font-weight: 700;">$799.99</span>
+              <a href="../404.html" class="btn btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.75rem;">View</a>
+            </div>
+          </div>
+
+          <!-- Card 3: Right -->
+          <div class="trio-card trio-card-right" style="background-color: #12181E; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
+            <img src="../assets/images/shop-chair.webp" alt="Chair" style="width: 100%; height: 140px; object-fit: cover; border-radius: var(--radius-sm); margin-bottom: 0.75rem;">
+            <h4 style="font-size: 1rem; color: #FFF; margin-bottom: 0.35rem;">Titan Ergo Throne Pro Chair</h4>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="color: var(--accent-lime); font-weight: 700;">$499.99</span>
+              <a href="../404.html" class="btn btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.75rem;">View</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+    <script src="../js/lenis.min.js"></script>
+    <script src="../js/gsap.min.js"></script>
+    <script src="../js/ScrollTrigger.min.js"></script>
+  <script src="../js/smooth-scroll.js"></script>
+  <script src="../js/main.js"></script>
+<script src="../js/charts.js"></script>
+  <script src="../js/customer.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      StacklyCharts.createDonutChart('wishlist-distribution-pie', [
+        { label: 'Upcoming Games', value: 6, color: '#00FF87' },
+        { label: 'Hardware / GPUs', value: 3, color: '#00F0FF' },
+        { label: 'Peripherals', value: 3, color: '#FF7700' },
+        { label: 'Consoles', value: 2, color: '#9D4EDD' }
+      ], { size: 180, centerText: '14', centerLabel: 'Items' });
+    });
+  </script>
+</body>
+</html>
+

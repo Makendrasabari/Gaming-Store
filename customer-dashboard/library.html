@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Game Library — Stackly Player Hub</title>
+
+  <link rel="icon" type="image/webp" href="../assets/logos/stackly-favicon.webp">
+
+  
+
+  <link rel="stylesheet" href="../css/style.css">
+
+  <link rel="stylesheet" href="../css/customer-dashboard.css">
+
+<link rel="stylesheet" href="../css/responsive.css">
+
+</head>
+
+<body class="dashboard-layout-body">
+
+  <!-- SIDEBAR BACKDROP OVERLAY -->
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+
+
+  <!-- FIXED SIDEBAR -->
+
+  <aside class="dashboard-sidebar" id="dashboardSidebar">
+
+    <div>
+
+      <div class="sidebar-brand-box">
+
+        <a href="dashboard.html" title="Dashboard Home">
+
+          <img src="../assets/logos/stackly-logo.webp" alt="Stackly Gaming" class="sidebar-brand-logo">
+
+        </a>
+        <button class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Close navigation drawer" title="Close Menu">&times;</button>
+
+      </div>
+
+
+
+      <ul class="sidebar-nav-list">
+
+        <li>
+
+          <a href="dashboard.html" class="sidebar-link">
+
+            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+
+            <span>Player Overview</span>
+
+          </a>
+
+        </li>
+
+        <li>
+
+          <a href="library.html" class="sidebar-link active">
+
+            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+
+            <span>Game Library</span>
+
+          </a>
+
+        </li>
+
+        <li>
+
+          <a href="purchases.html" class="sidebar-link">
+
+            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+
+            <span>Purchase Analytics</span>
+
+          </a>
+
+        </li>
+
+        <li>
+
+          <a href="wishlist.html" class="sidebar-link">
+
+            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+
+            <span>Wishlist &amp; Favorites</span>
+
+          </a>
+
+        </li>
+
+        <li>
+
+          <a href="profile.html" class="sidebar-link">
+
+            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+
+            <span>Player Profile</span>
+
+          </a>
+
+        </li>
+
+      </ul>
+
+    </div>
+
+
+
+    <div class="sidebar-bottom-action">
+
+      <button class="sidebar-logout-btn">
+
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+
+        <span>Sign Out</span>
+
+      </button>
+
+    </div>
+
+  </aside>
+
+
+
+  <!-- MAIN VIEW -->
+
+  <div class="dashboard-main-wrapper">
+
+    <header class="dashboard-topbar">
+      <div class="dashboard-topbar-left">
+                <button class="dashboard-hamburger-btn" id="dashboardHamburgerBtn" aria-label="Open Navigation Menu" title="Open Navigation">
+          <span class="dash-hamburger-line"></span>
+          <span class="dash-hamburger-line"></span>
+          <span class="dash-hamburger-line"></span>
+        </button>
+        <h2 class="dashboard-page-title">
+          <span class="title-full">GAME LIBRARY & LICENSES</span>
+          <span class="title-short">LIBRARY</span>
+        </h2>
+      </div>
+
+      <div class="dashboard-user-profile" id="userProfileBtn" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" title="View Profile">
+        <div class="user-meta-info" style="text-align: right;">
+          <span class="user-full-name">Alex Vance</span>
+          <span class="user-role-label">Expert</span>
+        </div>
+        <div class="user-avatar-initials">AV</div>
+
+        <!-- Professional Profile Dropdown (Role: Expert) -->
+        <div class="dashboard-profile-dropdown" id="dashboardProfileDropdown">
+          <div class="profile-card-header">
+            <div class="profile-card-avatar">AV</div>
+            <div class="profile-card-info">
+              <div class="profile-card-name" id="dropdownUserName">Alex Vance</div>
+              <div class="profile-card-email" id="dropdownUserEmail">alex.vance@gmail.com</div>
+              <div class="profile-card-role-badge">
+                <span class="role-dot"></span>
+                <span class="role-text">Role: Expert</span>
+              </div>
+            </div>
+          </div>
+          <div class="profile-card-divider"></div>
+          <div class="profile-card-actions">
+            <a href="../login.html" class="profile-action-link logout-action sidebar-logout-btn">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+              <span>Sign Out</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+
+
+    <main class="dashboard-content-area">
+
+      <!-- SECTION 1: LIBRARY STATS & OWNED SUMMARY -->
+
+      <section class="stats-cards-row reveal-on-scroll">
+
+        <div class="dash-stat-card">
+
+          <span class="dash-stat-label">Total Owned Games</span>
+
+          <span class="dash-stat-val">46</span>
+
+          <span class="dash-stat-change">100% Verified Digital Keys</span>
+
+        </div>
+
+        <div class="dash-stat-card">
+
+          <span class="dash-stat-label">Installed Titles</span>
+
+          <span class="dash-stat-val" style="color: var(--accent-lime);">12</span>
+
+          <span class="dash-stat-change">Ready to launch immediately</span>
+
+        </div>
+
+        <div class="dash-stat-card">
+
+          <span class="dash-stat-label">Total Game Time</span>
+
+          <span class="dash-stat-val">1,248h</span>
+
+          <span class="dash-stat-change">All platforms unified</span>
+
+        </div>
+
+        <div class="dash-stat-card">
+
+          <span class="dash-stat-label">Achievements Unlocked</span>
+
+          <span class="dash-stat-val" style="color: #00F0FF;">842</span>
+
+          <span class="dash-stat-change">74% completion average</span>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- SECTION 2: RECENTLY PLAYED GAMES -->
+
+      <section class="dash-panel reveal-on-scroll">
+
+        <div class="dash-panel-header">
+
+          <div>
+
+            <h3 class="dash-panel-title">RECENTLY PLAYED</h3>
+
+            <p style="font-size: 0.82rem; color: var(--text-muted);">Quick launch your most active sessions</p>
+
+          </div>
+
+          <span class="badge-lime">Cloud Save Synced</span>
+
+        </div>
+
+        <div class="trio-cards-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;">
+
+          <!-- Card 1: Left -->
+
+          <div class="trio-card trio-card-left" style="background-color: #12181E; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; display: flex; gap: 1.25rem; align-items: center;">
+
+            <img src="../assets/images/shortlist-elden-ring.webp" alt="Elden Ring" style="width: 70px; height: 85px; object-fit: cover; border-radius: var(--radius-sm);">
+
+            <div>
+
+              <h4 style="font-size: 1.05rem; color: #FFF;">Elden Ring</h4>
+
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0.2rem 0;">Played 2 hrs ago &bull; 148h logged</p>
+
+              <a href="../404.html" class="btn btn-primary" style="padding: 0.35rem 0.85rem; font-size: 0.75rem; margin-top: 0.5rem; text-decoration: none; display: inline-block;">Launch Game</a>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- Card 2: Top -->
+
+          <div class="trio-card trio-card-top" style="background-color: #12181E; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; display: flex; gap: 1.25rem; align-items: center;">
+
+            <img src="../assets/images/shortlist-cs2.webp" alt="CS2" style="width: 70px; height: 85px; object-fit: cover; border-radius: var(--radius-sm);">
+
+            <div>
+
+              <h4 style="font-size: 1.05rem; color: #FFF;">Counter-Strike 2</h4>
+
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0.2rem 0;">Played Yesterday &bull; 412h logged</p>
+
+              <a href="../404.html" class="btn btn-primary" style="padding: 0.35rem 0.85rem; font-size: 0.75rem; margin-top: 0.5rem; text-decoration: none; display: inline-block;">Launch Game</a>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- Card 3: Right -->
+
+          <div class="trio-card trio-card-right" style="background-color: #12181E; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; display: flex; gap: 1.25rem; align-items: center;">
+
+            <img src="../assets/images/shortlist-cyberpunk.webp" alt="Cyberpunk" style="width: 70px; height: 85px; object-fit: cover; border-radius: var(--radius-sm);">
+
+            <div>
+
+              <h4 style="font-size: 1.05rem; color: #FFF;">Cyberpunk 2077</h4>
+
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0.2rem 0;">Played 3 days ago &bull; 92h logged</p>
+
+              <a href="../404.html" class="btn btn-primary" style="padding: 0.35rem 0.85rem; font-size: 0.75rem; margin-top: 0.5rem; text-decoration: none; display: inline-block;">Launch Game</a>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+            <!-- SECTION 3: GAMING CATEGORIES FILTER -->
+
+      <section class="dash-panel reveal-on-scroll">
+
+        <div class="dash-panel-header">
+
+          <h3 class="dash-panel-title">LIBRARY GENRE CATEGORIES</h3>
+
+          <span style="font-size: 0.85rem; color: var(--text-muted);">Filter by tag</span>
+
+        </div>
+
+        <div class="library-genre-filters" id="libraryGenreFilters">
+
+          <button class="genre-filter-btn active" data-genre="all" type="button">
+
+            <span>ALL GAMES</span>
+
+            <span class="genre-count">46</span>
+
+          </button>
+
+          <button class="genre-filter-btn" data-genre="action-rpg" type="button">
+
+            <span>Action RPG</span>
+
+            <span class="genre-count">14</span>
+
+          </button>
+
+          <button class="genre-filter-btn" data-genre="tactical-shooters" type="button">
+
+            <span>Tactical Shooters</span>
+
+            <span class="genre-count">8</span>
+
+          </button>
+
+          <button class="genre-filter-btn" data-genre="sim-racing" type="button">
+
+            <span>Sim Racing</span>
+
+            <span class="genre-count">6</span>
+
+          </button>
+
+          <button class="genre-filter-btn" data-genre="open-world" type="button">
+
+            <span>Open World</span>
+
+            <span class="genre-count">11</span>
+
+          </button>
+
+          <button class="genre-filter-btn" data-genre="indie-retro" type="button">
+
+            <span>Indie &amp; Retro</span>
+
+            <span class="genre-count">7</span>
+
+          </button>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- SECTION 4: FULL GAME COLLECTION GALLERY & POPULAR TITLES -->
+
+      <section class="dash-panel reveal-on-scroll">
+
+        <div class="dash-panel-header">
+
+          <div>
+
+            <h3 class="dash-panel-title">YOUR GAME COLLECTION GALLERY</h3>
+
+            <p style="font-size: 0.82rem; color: var(--text-muted);" id="galleryFilterCounter">Showing 8 of 46 titles &bull; All Genres Matrix</p>
+
+          </div>
+
+        </div>
+
+        <div class="game-gallery-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;">
+
+          <!-- Card 1: Elden Ring -->
+
+          <div class="game-gallery-card" data-genre="action-rpg open-world" style="background-color: #12181E; border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow: hidden;">
+
+            <div class="card-media-wrap">
+
+              <img src="../assets/images/shortlist-elden-ring.webp" alt="Elden Ring">
+
+              <span class="card-genre-badge">Action RPG</span>
+
+              <div class="card-launch-btn">
+
+                <a href="../404.html" class="btn btn-primary" style="text-decoration: none; display: inline-block;">Launch Game</a>
+
+              </div>
+
+            </div>
+
+            <div style="padding: 1rem;">
+
+              <h4 style="font-size: 0.95rem; color: #FFF; margin-bottom: 0.2rem;">Elden Ring</h4>
+
+              <span style="font-size: 0.75rem; color: var(--accent-lime);">Steam Edition &bull; 100% Complete</span>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- Card 2: Cyberpunk 2077 -->
+
+          <div class="game-gallery-card" data-genre="action-rpg open-world" style="background-color: #12181E; border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow: hidden;">
+
+            <div class="card-media-wrap">
+
+              <img src="../assets/images/shortlist-cyberpunk.webp" alt="Cyberpunk">
+
+              <span class="card-genre-badge">Open World</span>
+
+              <div class="card-launch-btn">
+
+                <a href="../404.html" class="btn btn-primary" style="text-decoration: none; display: inline-block;">Launch Game</a>
+
+              </div>
+
+            </div>
+
+            <div style="padding: 1rem;">
+
+              <h4 style="font-size: 0.95rem; color: #FFF; margin-bottom: 0.2rem;">Cyberpunk 2077</h4>
+
+              <span style="font-size: 0.75rem; color: var(--accent-lime);">GOG Galaxy &bull; Phantom Liberty</span>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- Card 3: Forza Horizon 5 -->
+
+          <div class="game-gallery-card" data-genre="sim-racing open-world" style="background-color: #12181E; border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow: hidden;">
+
+            <div class="card-media-wrap">
+
+              <img src="../assets/images/shortlist-forza.webp" alt="Forza">
+
+              <span class="card-genre-badge">Sim Racing</span>
+
+              <div class="card-launch-btn">
+
+                <a href="../404.html" class="btn btn-primary" style="text-decoration: none; display: inline-block;">Launch Game</a>
+
+              </div>
+
+            </div>
+
+            <div style="padding: 1rem;">
+
+              <h4 style="font-size: 0.95rem; color: #FFF; margin-bottom: 0.2rem;">Forza Horizon 5</h4>
+
+              <span style="font-size: 0.75rem; color: var(--accent-lime);">Xbox PC &bull; 820 Cars</span>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- Card 4: Counter-Strike 2 -->
+
+          <div class="game-gallery-card" data-genre="tactical-shooters" style="background-color: #12181E; border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow: hidden;">
+
+            <div class="card-media-wrap">
+
+              <img src="../assets/images/shortlist-cs2.webp" alt="CS2">
+
+              <span class="card-genre-badge">Shooter</span>
+
+              <div class="card-launch-btn">
+
+                <a href="../404.html" class="btn btn-primary" style="text-decoration: none; display: inline-block;">Launch Game</a>
+
+              </div>
+
+            </div>
+
+            <div style="padding: 1rem;">
+
+              <h4 style="font-size: 0.95rem; color: #FFF; margin-bottom: 0.2rem;">Counter-Strike 2</h4>
+
+              <span style="font-size: 0.75rem; color: var(--accent-lime);">Prime Status Enabled</span>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- Card 5: Black Myth: Wukong -->
+
+          <div class="game-gallery-card" data-genre="action-rpg" style="background-color: #12181E; border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow: hidden;">
+
+            <div class="card-media-wrap">
+
+              <img src="../assets/images/game-blackmyth.webp" alt="Black Myth">
+
+              <span class="card-genre-badge">Action RPG</span>
+
+              <div class="card-launch-btn">
+
+                <a href="../404.html" class="btn btn-primary" style="text-decoration: none; display: inline-block;">Launch Game</a>
+
+              </div>
+
+            </div>
+
+            <div style="padding: 1rem;">
+
+              <h4 style="font-size: 0.95rem; color: #FFF; margin-bottom: 0.2rem;">Black Myth: Wukong</h4>
+
+              <span style="font-size: 0.75rem; color: var(--accent-lime);">Deluxe Edition</span>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- Card 6: Starfield -->
+
+          <div class="game-gallery-card" data-genre="action-rpg open-world" style="background-color: #12181E; border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow: hidden;">
+
+            <div class="card-media-wrap">
+
+              <img src="../assets/images/game-starfield.webp" alt="Starfield">
+
+              <span class="card-genre-badge">Open World</span>
+
+              <div class="card-launch-btn">
+
+                <a href="../404.html" class="btn btn-primary" style="text-decoration: none; display: inline-block;">Launch Game</a>
+
+              </div>
+
+            </div>
+
+            <div style="padding: 1rem;">
+
+              <h4 style="font-size: 0.95rem; color: #FFF; margin-bottom: 0.2rem;">Starfield</h4>
+
+              <span style="font-size: 0.75rem; color: var(--accent-lime);">Constellation Edition</span>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- Card 7: Valheim -->
+
+          <div class="game-gallery-card" data-genre="indie-retro open-world" style="background-color: #12181E; border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow: hidden;">
+
+            <div class="card-media-wrap">
+
+              <img src="../assets/images/game-valheim.webp" alt="Valheim">
+
+              <span class="card-genre-badge">Indie &amp; Retro</span>
+
+              <div class="card-launch-btn">
+
+                <a href="../404.html" class="btn btn-primary" style="text-decoration: none; display: inline-block;">Launch Game</a>
+
+              </div>
+
+            </div>
+
+            <div style="padding: 1rem;">
+
+              <h4 style="font-size: 0.95rem; color: #FFF; margin-bottom: 0.2rem;">Valheim</h4>
+
+              <span style="font-size: 0.75rem; color: var(--accent-lime);">Ashlands Update Ready</span>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- Card 8: Stardew Valley -->
+
+          <div class="game-gallery-card" data-genre="indie-retro" style="background-color: #12181E; border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow: hidden;">
+
+            <div class="card-media-wrap">
+
+              <img src="../assets/images/game-stardew.webp" alt="Stardew Valley">
+
+              <span class="card-genre-badge">Indie &amp; Retro</span>
+
+              <div class="card-launch-btn">
+
+                <a href="../404.html" class="btn btn-primary" style="text-decoration: none; display: inline-block;">Launch Game</a>
+
+              </div>
+
+            </div>
+
+            <div style="padding: 1rem;">
+
+              <h4 style="font-size: 0.95rem; color: #FFF; margin-bottom: 0.2rem;">Stardew Valley</h4>
+
+              <span style="font-size: 0.75rem; color: var(--accent-lime);">Version 1.6 Certified</span>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- Card 9: Valorant -->
+
+          <div class="game-gallery-card" data-genre="tactical-shooters" style="background-color: #12181E; border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow: hidden;">
+
+            <div class="card-media-wrap">
+
+              <img src="../assets/images/game-valorant.webp" alt="Valorant">
+
+              <span class="card-genre-badge">Tactical Shooter</span>
+
+              <div class="card-launch-btn">
+
+                <a href="../404.html" class="btn btn-primary" style="text-decoration: none; display: inline-block;">Launch Game</a>
+
+              </div>
+
+            </div>
+
+            <div style="padding: 1rem;">
+
+              <h4 style="font-size: 0.95rem; color: #FFF; margin-bottom: 0.2rem;">Valorant</h4>
+
+              <span style="font-size: 0.75rem; color: var(--accent-lime);">Radiant Division Active</span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+
+
+    <script src="../js/lenis.min.js"></script>
+    <script src="../js/gsap.min.js"></script>
+    <script src="../js/ScrollTrigger.min.js"></script>
+  <script src="../js/smooth-scroll.js"></script>
+  <script src="../js/main.js"></script>
+
+<script src="../js/customer.js"></script>
+
+</body>
+
+</html>
+
+
+

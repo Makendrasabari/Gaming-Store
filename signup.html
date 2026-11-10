@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up — Stackly Gaming Hub | Create Player Account</title>
+  <meta name="description" content="Join the Stackly Gaming community. Create your account to access curated games, community forums, exclusive discounts, and personalized analytics.">
+  <link rel="icon" type="image/webp" href="assets/logos/stackly-favicon.webp">
+  
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+  <link rel="stylesheet" href="css/preloader.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- ======================================================================
+       CINEMATIC GUN-SHOOTING PRELOADER
+       ====================================================================== -->
+  <div id="gaming-preloader" aria-hidden="true">
+    <div class="preloader-backdrop">
+      <div class="preloader-cyber-grid"></div>
+      <div class="preloader-ambient-glow"></div>
+    </div>
+    <div class="preloader-flash-overlay"></div>
+    <div class="preloader-shake-layer">
+      <div class="preloader-core">
+        <div class="preloader-hud-bracket bracket-top-left"></div>
+        <div class="preloader-hud-bracket bracket-top-right"></div>
+        <div class="preloader-hud-bracket bracket-bottom-left"></div>
+        <div class="preloader-hud-bracket bracket-bottom-right"></div>
+
+        <div class="preloader-logo-wrap">
+          <img src="assets/logos/stackly-logo.webp" alt="Stackly Gaming" class="preloader-brand-logo">
+          <span class="preloader-tagline">NEXT-GEN GAMING ECOSYSTEM</span>
+        </div>
+
+        <div class="preloader-weapon-viewport">
+          <div class="gun-rig">
+            <img src="assets/images/preloader-gun.webp" alt="Futuristic Weapon" class="gun-asset">
+            <div class="gun-mechanical-slide">
+              <div class="gun-slide-vents">
+                <span></span><span></span><span></span><span></span>
+              </div>
+            </div>
+            <div class="gun-plasma-chamber"></div>
+            <div class="gun-holo-sight"></div>
+            <div class="gun-muzzle-blast">
+              <div class="blast-star"></div>
+              <div class="blast-ray-horizontal"></div>
+              <div class="blast-ray-vertical"></div>
+            </div>
+            <div class="gun-shockwave-ring"></div>
+            <div class="gun-plasma-tracer"></div>
+            <div class="plasma-eject-particle"></div>
+          </div>
+        </div>
+
+        <div class="preloader-meter-wrap">
+          <div class="preloader-meter-header">
+            <span class="preloader-telemetry-text">ACQUIRING WEAPON MATRIX...</span>
+            <span class="preloader-percent-readout">0%</span>
+          </div>
+          <div class="preloader-meter-track">
+            <div class="preloader-meter-fill"></div>
+          </div>
+          <div class="preloader-status-bar">
+            <span class="preloader-status-dot"></span>
+            <span>SYSTEM ENCRYPTION SECURE // DIRECT FEED</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Two-Column Authentication Split Layout (No Navbar, No Footer) -->
+  <div class="auth-split-wrapper">
+    
+    <!-- LEFT SIDE: High-Impact Gaming Art Pane (Distinct image: signup-art.webp) -->
+    <aside class="auth-art-column signup-art" aria-label="Gaming Visual Showcase">
+      <div class="auth-art-overlay"></div>
+      
+      <div class="auth-art-top">
+        <div class="auth-art-badge">
+          <span class="auth-art-badge-dot"></span>
+          JOIN 250,000+ SQUAD PLAYERS
+        </div>
+      </div>
+
+      <div class="auth-art-bottom">
+        <h2 class="auth-art-headline">
+          FORGE YOUR <br>
+          <span class="accent-text">BATTLE IDENTITY.</span>
+        </h2>
+        <p class="auth-art-caption">
+          Unlock instant access to cross-platform game libraries, esport tournaments, ultra-fast shipping on custom rigs, and verified community build guides.
+        </p>
+      </div>
+    </aside>
+
+    <!-- RIGHT SIDE: Centered Signup Form Pane -->
+    <main class="auth-form-column">
+      <div class="auth-form-inner">
+        
+        <header class="auth-brand-header">
+          <a href="index.html" class="auth-logo-link" title="Return to Stackly Home">
+            <img src="assets/logos/stackly-logo.webp" alt="Stackly Gaming" class="auth-logo-img">
+          </a>
+          <h1 class="auth-heading">CREATE ACCOUNT</h1>
+          <p class="auth-subheading">Fill in your information to join the Stackly gaming realm.</p>
+        </header>
+
+        <!-- Success Toast on successful signup -->
+        <div class="auth-toast-success" id="signup-success-toast">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <span>Account created! Redirecting to login...</span>
+        </div>
+
+        <form id="stackly-signup-form" novalidate>
+          
+          <!-- Field 1: Full Name -->
+          <div class="auth-field-group">
+            <label for="signup-name" class="auth-field-label">
+              <span>Full Name</span>
+              <span style="color: var(--accent-green); font-size: 0.75rem;">* Required</span>
+            </label>
+            <input 
+              type="text" 
+              id="signup-name" 
+              class="auth-field-input" 
+              placeholder="e.g. Mahendra Sabari" 
+              autocomplete="name"
+              required>
+            <div class="auth-error-msg" id="signup-name-error">Please enter your full name.</div>
+          </div>
+
+          <!-- Field 2: Email Address -->
+          <div class="auth-field-group">
+            <label for="signup-email" class="auth-field-label">
+              <span>Email Address</span>
+            </label>
+            <div class="auth-input-wrapper">
+              <input 
+                type="email" 
+                id="signup-email" 
+                name="email"
+                class="auth-field-input" 
+                placeholder="Enter the email" 
+                autocomplete="off"
+                required>
+
+              <!-- Google Recommended Accounts Dropdown (Hover/Focus) -->
+              <div class="google-email-suggestions" id="signup-google-suggestions" role="listbox" aria-label="Google Recommended Accounts">
+                <div class="google-sugg-header">
+                  <svg class="google-icon" width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
+                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/>
+                  </svg>
+                  <span>Google Recommended Accounts</span>
+                </div>
+                <div class="google-sugg-list">
+                  <div class="google-sugg-item" data-email="makendrasabari02@gmail.com" data-name="Makendra Sabari" data-role="customer" tabindex="0">
+                    <div class="google-sugg-avatar avatar-blue">M</div>
+                    <div class="google-sugg-info">
+                      <span class="google-sugg-name">Makendra Sabari</span>
+                      <span class="google-sugg-email">makendrasabari02@gmail.com</span>
+                    </div>
+                    <span class="google-sugg-badge">Saved</span>
+                  </div>
+                  <div class="google-sugg-item" data-email="player.stackly@gmail.com" data-name="Stackly Player" data-role="customer" tabindex="0">
+                    <div class="google-sugg-avatar avatar-green">P</div>
+                    <div class="google-sugg-info">
+                      <span class="google-sugg-name">Stackly Player</span>
+                      <span class="google-sugg-email">player.stackly@gmail.com</span>
+                    </div>
+                    <span class="google-sugg-badge">Demo</span>
+                  </div>
+                  <div class="google-sugg-item" data-email="admin.stackly@gmail.com" data-name="Stackly Admin" data-role="admin" tabindex="0">
+                    <div class="google-sugg-avatar avatar-red">A</div>
+                    <div class="google-sugg-info">
+                      <span class="google-sugg-name">Stackly Admin</span>
+                      <span class="google-sugg-email">admin.stackly@gmail.com</span>
+                    </div>
+                    <span class="google-sugg-badge">Admin</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="auth-error-msg" id="signup-email-error">Please enter a valid email address.</div>
+          </div>
+
+          <!-- Field 3: Password -->
+          <div class="auth-field-group">
+            <label for="signup-password" class="auth-field-label">
+              <span>Create Password</span>
+            </label>
+            <input 
+              type="password" 
+              id="signup-password" 
+              class="auth-field-input" 
+              placeholder="Enter the password" 
+              autocomplete="new-password"
+              required>
+            <div class="auth-error-msg" id="signup-password-error">Please enter your password.</div>
+          </div>
+
+          <!-- Field 4: Confirm Password -->
+          <div class="auth-field-group">
+            <label for="signup-confirm-password" class="auth-field-label">
+              <span>Confirm Password</span>
+            </label>
+            <input 
+              type="password" 
+              id="signup-confirm-password" 
+              class="auth-field-input" 
+              placeholder="Repeat your password" 
+              autocomplete="new-password"
+              required>
+            <div class="auth-error-msg" id="signup-confirm-error">Passwords do not match.</div>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="auth-submit-btn">
+            <span>Create Stackly Account</span>
+          </button>
+
+          <!-- Switch to Login Link -->
+          <div class="auth-switch-box">
+            <span>Already have an account?</span>
+            <a href="login.html" class="auth-switch-link">Log In Here</a>
+          </div>
+
+        </form>
+      </div>
+    </main>
+
+  </div>
+
+    <script src="js/lenis.min.js"></script>
+    <script src="js/gsap.min.js"></script>
+    <script src="js/ScrollTrigger.min.js"></script>
+  <script src="js/smooth-scroll.js"></script>
+  <script src="js/preloader.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>
+
