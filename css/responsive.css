@@ -444,8 +444,9 @@ html, body {
   .members-spotlight-grid,
   .blog-cards-grid,
   .reviews-grid,
-  .contact-channels-grid {
-    grid-template-columns: 1fr;
+  .contact-channels-grid,
+  .forum-intro-grid {
+    grid-template-columns: 1fr !important;
   }
 
   .newsletter-card {

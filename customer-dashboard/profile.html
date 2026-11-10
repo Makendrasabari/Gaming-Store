@@ -115,18 +115,31 @@
 
     <main class="dashboard-content-area">
       <!-- SECTION 1: PLAYER PROFILE OVERVIEW CARD -->
-      <section class="dash-panel reveal-on-scroll" style="background: linear-gradient(135deg, #10161C 0%, #090C0F 100%);">
-        <div style="display: flex; gap: 2rem; align-items: center; flex-wrap: wrap;">
-          <div class="user-avatar-initials" style="width: 84px; height: 84px; font-size: 2.2rem; border-width: 2px;">P</div>
-          <div style="flex-grow: 1;">
-            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.35rem;">
-              <h1 class="user-full-name" style="font-size: 1.8rem; font-family: var(--font-display);">Player</h1>
-              <span class="badge-lime">Stackly Elite Pro</span>
+      <section class="dash-panel reveal-on-scroll profile-hero-panel">
+        <div class="profile-hero-layout">
+          <!-- Left: Avatar & Identity Details -->
+          <div class="profile-hero-main">
+            <div class="profile-avatar-box">
+              <div class="user-avatar-initials profile-hero-avatar">P</div>
             </div>
-            <p style="color: var(--text-gray); font-size: 0.9rem;">Member since March 2024 &bull; Verified ID: #STK-849204 &bull; Region: North America West</p>
+            <div class="profile-details-col">
+              <div class="profile-name-badge-row">
+                <h1 class="user-full-name profile-hero-name">Player</h1>
+                <span class="badge-lime profile-hero-badge">Stackly Elite Pro</span>
+              </div>
+              <div class="profile-meta-row">
+                <span class="profile-meta-item">Member since March 2024</span>
+                <span class="profile-meta-sep">&bull;</span>
+                <span class="profile-meta-item">Verified ID: #STK-849204</span>
+                <span class="profile-meta-sep">&bull;</span>
+                <span class="profile-meta-item">Region: North America West</span>
+              </div>
+            </div>
           </div>
-          <div style="display: flex; gap: 1rem;">
-            <a href="../404.html" class="btn btn-primary" style="font-size: 0.85rem; text-decoration: none; display: inline-block;">Save Profile</a>
+
+          <!-- Right: Save Profile Action Button -->
+          <div class="profile-hero-action">
+            <a href="../404.html" class="btn btn-primary profile-save-btn">Save Profile</a>
           </div>
         </div>
       </section>

@@ -973,17 +973,28 @@ textarea:focus {
 }
 
 .cart-close-btn {
-  background: none;
-  border: none;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-sm);
   color: var(--text-gray);
   font-size: 1.6rem;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   line-height: 1;
   cursor: pointer;
-  transition: color var(--transition-fast);
+  transition: all var(--transition-fast);
+  padding: 0;
+  user-select: none;
 }
 
 .cart-close-btn:hover {
+  background: rgba(0, 255, 135, 0.12);
+  border-color: var(--accent-green);
   color: var(--accent-green);
+  transform: rotate(90deg);
 }
 
 .cart-drawer-top-actions {

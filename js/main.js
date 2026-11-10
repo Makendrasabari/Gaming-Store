@@ -466,8 +466,15 @@ function ensureGlobalCartDrawer() {
     const closeBtn = document.getElementById('cart-close-btn');
     const checkoutBtn = document.getElementById('checkout-btn');
 
-    if (overlay) overlay.onclick = () => StacklyCart.close();
-    if (closeBtn) closeBtn.onclick = () => StacklyCart.close();
+    if (overlay) {
+      overlay.onclick = () => StacklyCart.close();
+    }
+    if (closeBtn) {
+      closeBtn.onclick = (e) => {
+        if (e) e.stopPropagation();
+        StacklyCart.close();
+      };
+    }
     if (checkoutBtn) {
       checkoutBtn.onclick = () => {
         StacklyCart.close();
@@ -490,7 +497,7 @@ function ensureGlobalCartDrawer() {
   drawer.innerHTML = `
     <div class="cart-drawer-header">
       <h3 class="cart-drawer-title">YOUR GAMING CART</h3>
-      <button class="cart-close-btn" id="cart-close-btn" aria-label="Close Cart">&times;</button>
+      <button class="cart-close-btn" id="cart-close-btn" aria-label="Close Cart" title="Close Cart" onclick="StacklyCart.close()">&times;</button>
     </div>
     
     <div class="cart-items-container" id="cart-items-list">
@@ -521,13 +528,37 @@ function ensureGlobalCartDrawer() {
   document.body.appendChild(drawer);
 
   overlay.onclick = () => StacklyCart.close();
-  drawer.querySelector('#cart-close-btn').onclick = () => StacklyCart.close();
+  const injectedClose = drawer.querySelector('#cart-close-btn');
+  if (injectedClose) {
+    injectedClose.onclick = (e) => {
+      if (e) e.stopPropagation();
+      StacklyCart.close();
+    };
+  }
   drawer.querySelector('#checkout-btn').onclick = () => {
     StacklyCart.close();
     const isSub = window.location.pathname.includes('customer-dashboard') || window.location.pathname.includes('admin-dashboard');
     window.location.href = isSub ? '../404.html' : '404.html';
   };
 }
+
+// Universal Cart Drawer Close Event Delegation (Click on × or overlay, or Escape key)
+document.addEventListener('click', (e) => {
+  if (e.target && (e.target.closest('#cart-close-btn') || e.target.closest('.cart-close-btn'))) {
+    e.preventDefault();
+    if (window.StacklyCart && typeof window.StacklyCart.close === 'function') {
+      window.StacklyCart.close();
+    }
+  }
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    if (window.StacklyCart && typeof window.StacklyCart.close === 'function') {
+      window.StacklyCart.close();
+    }
+  }
+});
 
 /* ==========================================================================
    2. PREMIUM RIGHT-TO-LEFT CINEMATIC HEADING ANIMATION SYSTEM

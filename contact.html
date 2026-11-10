@@ -856,27 +856,54 @@
 
 
 
-        <!-- Stackly Salem Map (Interactive Live Google Map & Satellite Radar) -->
-        <div class="salem-map-container">
+        <!-- Stackly Salem Map (Click anywhere to navigate to Google Maps in Chrome) -->
+        <div class="salem-map-container" id="salemMapSection">
           <div class="map-mode-tabs">
             <div style="display: flex; gap: 0.5rem; background: rgba(14, 19, 23, 0.85); border: 1px solid var(--border-color); padding: 0.35rem; border-radius: var(--radius-sm);">
-              <button type="button" id="btn-map-interactive" class="map-tab-btn active" onclick="switchMapMode('live')" style="background: var(--accent-lime); color: #000; border: none; padding: 0.45rem 1rem; border-radius: 4px; font-weight: 700; font-size: 0.82rem; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; transition: all 0.3s ease;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                Live Google Map
-              </button>
-              <button type="button" id="btn-map-satellite" class="map-tab-btn" onclick="switchMapMode('satellite')" style="background: transparent; color: var(--text-gray); border: none; padding: 0.45rem 1rem; border-radius: 4px; font-weight: 700; font-size: 0.82rem; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; transition: all 0.3s ease;">
+              <button type="button" id="btn-map-satellite" class="map-tab-btn active" onclick="switchMapMode('satellite')" style="background: var(--accent-lime); color: #000; border: none; padding: 0.45rem 1rem; border-radius: 4px; font-weight: 700; font-size: 0.82rem; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; transition: all 0.3s ease;">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
                 Salem HQ Satellite Radar
               </button>
+              <button type="button" id="btn-map-interactive" class="map-tab-btn" onclick="switchMapMode('live')" style="background: transparent; color: var(--text-gray); border: none; padding: 0.45rem 1rem; border-radius: 4px; font-weight: 700; font-size: 0.82rem; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; transition: all 0.3s ease;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                Live Google Map
+              </button>
             </div>
-            <a href="https://www.google.com/maps/search/?api=1&query=MMR+Complex+Chinna+Thirupathi+Salem+Tamil+Nadu+636008" target="_blank" rel="noopener noreferrer" class="text-link" style="font-size: 0.85rem; display: flex; align-items: center; gap: 0.35rem;">
+            <a href="https://www.google.com/maps/search/?api=1&query=MMR+Complex+Chinna+Thirupathi+Salem+Tamil+Nadu+636008" target="_blank" rel="noopener noreferrer" class="text-link" style="font-size: 0.85rem; display: flex; align-items: center; gap: 0.35rem;" title="Open in Fullscreen Google Maps in Chrome">
               <span>Open in Fullscreen Google Maps</span>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
             </a>
           </div>
 
-          <!-- Mode 1: Live Interactive Google Map centered on Salem MMR Complex -->
-          <div id="map-live-view" class="static-map-wrapper" style="margin-top: 0; height: 420px;">
+          <!-- Mode 1 (Active Default): Salem HQ Satellite Radar Image View with full Chrome navigation -->
+          <div id="map-satellite-view" class="static-map-wrapper" style="margin-top: 0; height: 420px; display: block;" onclick="openSalemMapInChrome(event)" title="Click anywhere to navigate to Google Maps in Chrome">
+            <a href="https://www.google.com/maps/search/?api=1&query=MMR+Complex+Chinna+Thirupathi+Salem+Tamil+Nadu+636008" target="_blank" rel="noopener noreferrer" class="map-click-overlay" aria-label="Open Stackly Salem Headquarters in Google Maps (Chrome)">
+              <div class="map-hover-hint">
+                <span class="hud-pulse-dot"></span>
+                <span>Click map to open in Google Maps (Chrome) &nearr;</span>
+              </div>
+            </a>
+            <img src="assets/images/salem-map.webp" alt="Stackly Gaming Salem Headquarters Radar Map" class="static-map-img" style="height: 100%;">
+            <div class="map-floating-overlay" onclick="openSalemMapInChrome(event)">
+              <div class="map-pin-pulse"></div>
+              <div>
+                <h4 style="color: var(--text-white); font-size: 1rem; margin-bottom: 0.2rem;">Stackly Headquarters &amp; Flagship Lab</h4>
+                <p style="color: var(--text-gray); font-size: 0.85rem;">MMR Complex, Chinna Thirupathi, Salem, Tamil Nadu &ndash; 636008</p>
+                <a href="https://www.google.com/maps/search/?api=1&query=MMR+Complex+Chinna+Thirupathi+Salem+Tamil+Nadu+636008" target="_blank" rel="noopener noreferrer" style="color: var(--accent-lime); font-size: 0.8rem; font-weight: 700; margin-top: 0.35rem; display: inline-flex; align-items: center; gap: 0.3rem;">
+                  <span>Open in Google Maps &nearr;</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mode 2: Live Interactive Google Map with click-to-Chrome overlay and fallback -->
+          <div id="map-live-view" class="static-map-wrapper" style="margin-top: 0; height: 420px; display: none;" onclick="openSalemMapInChrome(event)" title="Click anywhere to navigate to Google Maps in Chrome">
+            <a href="https://www.google.com/maps/search/?api=1&query=MMR+Complex+Chinna+Thirupathi+Salem+Tamil+Nadu+636008" target="_blank" rel="noopener noreferrer" class="map-click-overlay" aria-label="Open Stackly Salem Headquarters in Google Maps (Chrome)">
+              <div class="map-hover-hint">
+                <span class="hud-pulse-dot"></span>
+                <span>Click map to open in Google Maps (Chrome) &nearr;</span>
+              </div>
+            </a>
             <iframe 
               src="https://maps.google.com/maps?q=MMR%20Complex,%20Chinna%20Thirupathi,%20Salem,%20Tamil%20Nadu%20636008&t=&z=15&ie=UTF8&iwloc=&output=embed" 
               class="live-salem-map-frame"
@@ -885,26 +912,11 @@
               referrerpolicy="no-referrer-when-downgrade"
               title="Stackly Gaming Salem Headquarters Map">
             </iframe>
-            <div class="map-floating-overlay">
+            <div class="map-floating-overlay" onclick="openSalemMapInChrome(event)">
               <div class="map-pin-pulse"></div>
               <div>
                 <h4 style="color: var(--text-white); font-size: 1rem; margin-bottom: 0.2rem;">Stackly Headquarters &amp; Flagship Lab</h4>
-                <p style="color: var(--text-gray); font-size: 0.85rem;">MMR Complex, Chinna Thirupathi, Salem, Tamil Nadu – 636008</p>
-                <a href="https://www.google.com/maps/search/?api=1&query=MMR+Complex+Chinna+Thirupathi+Salem+Tamil+Nadu+636008" target="_blank" rel="noopener noreferrer" style="color: var(--accent-lime); font-size: 0.8rem; font-weight: 700; margin-top: 0.35rem; display: inline-flex; align-items: center; gap: 0.3rem;">
-                  <span>Open in Google Maps &nearr;</span>
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <!-- Mode 2: Salem HQ Satellite Radar Image -->
-          <div id="map-satellite-view" class="static-map-wrapper" style="margin-top: 0; height: 420px; display: none;">
-            <img src="assets/images/salem-map.webp" alt="Stackly Gaming Salem Headquarters Radar Map" class="static-map-img" style="height: 100%;">
-            <div class="map-floating-overlay">
-              <div class="map-pin-pulse"></div>
-              <div>
-                <h4 style="color: var(--text-white); font-size: 1rem; margin-bottom: 0.2rem;">Stackly Headquarters &amp; Flagship Lab</h4>
-                <p style="color: var(--text-gray); font-size: 0.85rem;">MMR Complex, Chinna Thirupathi, Salem, Tamil Nadu – 636008</p>
+                <p style="color: var(--text-gray); font-size: 0.85rem;">MMR Complex, Chinna Thirupathi, Salem, Tamil Nadu &ndash; 636008</p>
                 <a href="https://www.google.com/maps/search/?api=1&query=MMR+Complex+Chinna+Thirupathi+Salem+Tamil+Nadu+636008" target="_blank" rel="noopener noreferrer" style="color: var(--accent-lime); font-size: 0.8rem; font-weight: 700; margin-top: 0.35rem; display: inline-flex; align-items: center; gap: 0.3rem;">
                   <span>Open in Google Maps &nearr;</span>
                 </a>
@@ -1303,7 +1315,29 @@
 
     });
 
-    // Map Mode Switcher (Live Google Map vs Satellite Radar)
+    // Google Maps Chrome Navigation URL for Stackly HQ Salem
+    const SALEM_HQ_MAP_URL = 'https://www.google.com/maps/search/?api=1&query=MMR+Complex+Chinna+Thirupathi+Salem+Tamil+Nadu+636008';
+
+    window.openSalemMapInChrome = function(event) {
+      if (event && event.stopPropagation) {
+        event.stopPropagation();
+      }
+      window.open(SALEM_HQ_MAP_URL, '_blank', 'noopener,noreferrer');
+    };
+
+    // Attach click listeners to all map containers and elements
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.salem-map-container .static-map-wrapper').forEach(wrapper => {
+        wrapper.style.cursor = 'pointer';
+        wrapper.addEventListener('click', (e) => {
+          if (!e.target.closest('a')) {
+            window.open(SALEM_HQ_MAP_URL, '_blank', 'noopener,noreferrer');
+          }
+        });
+      });
+    });
+
+    // Map Mode Switcher (Salem HQ Satellite Radar vs Live Google Map)
     window.switchMapMode = function(mode) {
       const live = document.getElementById('map-live-view');
       const sat = document.getElementById('map-satellite-view');
