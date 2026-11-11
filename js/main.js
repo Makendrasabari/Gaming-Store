@@ -7,22 +7,17 @@
 /* ==========================================================================
    1. GLOBAL STACKLY CART ENGINE
    ========================================================================== */
-window.isCartClosing = false;
-let isCartClosing = false;
-
 window.closeCartDrawer = function (e) {
   if (window.StacklyCart && typeof window.StacklyCart.close === 'function') {
     window.StacklyCart.close(e);
   }
 };
 
-window.openCartDrawer = function (e) {
-  if (window.StacklyCart && typeof window.StacklyCart.open === 'function') {
-    window.StacklyCart.open(e);
-  }
-};
-
 window.StacklyCart = {
+  _initialized: false,
+  _isOpen: false,
+  _lastToggle: 0,
+
   getCart() {
     try {
       return JSON.parse(localStorage.getItem('stackly_cart') || '[]');
@@ -40,6 +35,85 @@ window.StacklyCart = {
   getTotalQty() {
     const cart = this.getCart();
     return cart.reduce((sum, item) => sum + (parseInt(item.qty, 10) || 1), 0);
+  },
+
+  isOpen() {
+    const drawer = document.querySelector('.cart-drawer, #cart-drawer');
+    return drawer ? drawer.classList.contains('active') : this._isOpen;
+  },
+
+  open() {
+    this._isOpen = true;
+    ensureGlobalCartDrawer();
+
+    const drawers = document.querySelectorAll('.cart-drawer, #cart-drawer');
+    drawers.forEach(d => {
+      d.classList.add('active');
+      d.setAttribute('aria-hidden', 'false');
+    });
+
+    const overlays = document.querySelectorAll('.cart-drawer-overlay, #cart-overlay');
+    overlays.forEach(o => {
+      o.classList.add('active');
+      o.setAttribute('aria-hidden', 'false');
+    });
+
+    document.body.classList.add('cart-open');
+    document.documentElement.classList.add('cart-open');
+
+    this.render();
+    this.updateBadges();
+
+    if (window.lenis && typeof window.lenis.stop === 'function') {
+      window.lenis.stop();
+    }
+  },
+
+  close(e) {
+    if (e && typeof e.preventDefault === 'function') e.preventDefault();
+    if (e && typeof e.stopPropagation === 'function') e.stopPropagation();
+
+    this._isOpen = false;
+
+    const drawers = document.querySelectorAll('.cart-drawer, #cart-drawer');
+    drawers.forEach(d => {
+      d.classList.remove('active');
+      d.setAttribute('aria-hidden', 'true');
+    });
+
+    const overlays = document.querySelectorAll('.cart-drawer-overlay, #cart-overlay');
+    overlays.forEach(o => {
+      o.classList.remove('active');
+      o.setAttribute('aria-hidden', 'true');
+    });
+
+    document.body.classList.remove('cart-open');
+    document.documentElement.classList.remove('cart-open');
+
+    if (window.location.hash === '#cart') {
+      try {
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+      } catch (err) {}
+    }
+
+    if (window.lenis && typeof window.lenis.start === 'function') {
+      window.lenis.start();
+    }
+  },
+
+  toggle(e) {
+    if (e && typeof e.preventDefault === 'function') e.preventDefault();
+    if (e && typeof e.stopPropagation === 'function') e.stopPropagation();
+
+    const now = Date.now();
+    if (now - this._lastToggle < 250) return;
+    this._lastToggle = now;
+
+    if (this.isOpen()) {
+      this.close();
+    } else {
+      this.open();
+    }
   },
 
   add(title, price, image, id, btnEl, qtyToAdd = 1) {
@@ -127,16 +201,9 @@ window.StacklyCart = {
   },
 
   removeItem(indexOrEvent, maybeIndex) {
-    let e = null;
     let index = indexOrEvent;
     if (indexOrEvent && typeof indexOrEvent.preventDefault === 'function') {
-      e = indexOrEvent;
       index = maybeIndex;
-    }
-    if (e) {
-      if (typeof e.preventDefault === 'function') e.preventDefault();
-      if (typeof e.stopPropagation === 'function') e.stopPropagation();
-      if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
     }
     const idx = parseInt(index, 10);
     if (isNaN(idx)) return;
@@ -175,103 +242,6 @@ window.StacklyCart = {
     });
   },
 
-  isOpen() {
-    const drawer = document.getElementById('cart-drawer') || document.querySelector('.cart-drawer');
-    return Boolean(drawer && drawer.classList.contains('active'));
-  },
-
-  toggle(e) {
-    if (e && e.__stacklyHandled) return;
-    if (e) {
-      e.__stacklyHandled = true;
-      if (typeof e.preventDefault === 'function') e.preventDefault();
-      if (typeof e.stopPropagation === 'function') e.stopPropagation();
-    }
-    const now = Date.now();
-    if (this._lastToggleTime && now - this._lastToggleTime < 250) return;
-    this._lastToggleTime = now;
-
-    if (this.isOpen()) {
-      this.close(e);
-    } else {
-      this.open();
-    }
-  },
-
-  open() {
-    isCartClosing = false;
-    window.isCartClosing = false;
-    ensureGlobalCartDrawer();
-    const drawers = document.querySelectorAll('.cart-drawer, #cart-drawer');
-    drawers.forEach(d => {
-      d.classList.add('active');
-      d.setAttribute('aria-hidden', 'false');
-      d.style.transform = '';
-      d.style.visibility = '';
-      d.style.pointerEvents = '';
-    });
-    const overlays = document.querySelectorAll('.cart-drawer-overlay, #cart-overlay');
-    overlays.forEach(o => {
-      o.classList.add('active');
-      o.setAttribute('aria-hidden', 'false');
-      o.style.opacity = '';
-      o.style.visibility = '';
-      o.style.pointerEvents = '';
-    });
-    document.body.classList.add('cart-open');
-    document.documentElement.classList.add('cart-open');
-    this.render();
-
-    // Re-verify close button direct listeners
-    const closeBtns = document.querySelectorAll('#cart-close-btn, .cart-close-btn, [data-cart-close]');
-    closeBtns.forEach(btn => {
-      btn.onclick = (e) => {
-        if (e) {
-          if (e.__stacklyHandled) return;
-          e.__stacklyHandled = true;
-          if (typeof e.preventDefault === 'function') e.preventDefault();
-          if (typeof e.stopPropagation === 'function') e.stopPropagation();
-        }
-        StacklyCart.close(e);
-      };
-    });
-  },
-
-  close(e) {
-    if (e) {
-      if (e.__stacklyHandled) return;
-      e.__stacklyHandled = true;
-      if (typeof e.preventDefault === 'function') e.preventDefault();
-      if (typeof e.stopPropagation === 'function') e.stopPropagation();
-    }
-    isCartClosing = false;
-    window.isCartClosing = false;
-
-    const drawers = document.querySelectorAll('.cart-drawer, #cart-drawer');
-    drawers.forEach(d => {
-      d.classList.remove('active');
-      d.setAttribute('aria-hidden', 'true');
-      d.style.transform = '';
-      d.style.visibility = '';
-      d.style.pointerEvents = '';
-    });
-    const overlays = document.querySelectorAll('.cart-drawer-overlay, #cart-overlay');
-    overlays.forEach(o => {
-      o.classList.remove('active');
-      o.setAttribute('aria-hidden', 'true');
-      o.style.opacity = '';
-      o.style.visibility = '';
-      o.style.pointerEvents = '';
-    });
-    document.body.classList.remove('cart-open');
-    document.documentElement.classList.remove('cart-open');
-    if (window.location.hash === '#cart') {
-      try {
-        history.replaceState(null, '', window.location.pathname + window.location.search);
-      } catch (err) {}
-    }
-  },
-
   render() {
     const listEl = document.getElementById('cart-items-list');
     const subtotalEl = document.getElementById('cart-subtotal');
@@ -289,7 +259,7 @@ window.StacklyCart = {
           <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
           <h4>YOUR CART IS EMPTY</h4>
           <p>No games or battlestation hardware selected yet.</p>
-          <a href="shop.html" class="btn btn-primary" onclick="StacklyCart.close()" style="margin-top: 1.25rem; padding: 0.6rem 1.4rem; font-size: 0.88rem;">Explore Catalog</a>
+          <a href="shop.html" class="btn btn-primary" onclick="if(window.location.pathname.includes('shop.html')){event.preventDefault();} StacklyCart.close();" style="margin-top: 1.25rem; padding: 0.6rem 1.4rem; font-size: 0.88rem;">Explore Catalog</a>
         </div>
       `;
       if (subtotalEl) subtotalEl.textContent = '$0.00';
@@ -301,7 +271,7 @@ window.StacklyCart = {
     let html = `
       <div class="cart-drawer-top-actions">
         <span class="cart-total-items-badge">${totalQty} Total Items</span>
-        <button class="cart-clear-btn" onclick="StacklyCart.clear()">Clear Cart</button>
+        <button class="cart-clear-btn" type="button" onclick="StacklyCart.clear()">Clear Cart</button>
       </div>
     `;
 
@@ -320,15 +290,15 @@ window.StacklyCart = {
             
             <!-- Quantity Stepper (+ / -) -->
             <div class="cart-stepper-box">
-              <button class="cart-stepper-btn" onclick="StacklyCart.changeQty(${idx}, -1)" title="Decrease Quantity" aria-label="Decrease">&minus;</button>
+              <button class="cart-stepper-btn" type="button" onclick="StacklyCart.changeQty(${idx}, -1)" title="Decrease Quantity" aria-label="Decrease">&minus;</button>
               <span class="cart-stepper-qty">${itemQty}</span>
-              <button class="cart-stepper-btn" onclick="StacklyCart.changeQty(${idx}, 1)" title="Increase Quantity" aria-label="Increase">&plus;</button>
+              <button class="cart-stepper-btn" type="button" onclick="StacklyCart.changeQty(${idx}, 1)" title="Increase Quantity" aria-label="Increase">&plus;</button>
             </div>
           </div>
           
           <div class="cart-item-action-col">
             <span class="cart-item-total-price">$${itemTotal.toFixed(2)}</span>
-            <button class="cart-remove-item" type="button" data-index="${idx}" onclick="StacklyCart.removeItem(event, ${idx})" title="Remove item" aria-label="Remove item">
+            <button class="cart-remove-item" type="button" data-index="${idx}" onclick="StacklyCart.removeItem(${idx})" title="Remove item" aria-label="Remove item">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="pointer-events: none;">
                 <line x1="18" y1="6" x2="6" y2="18" style="pointer-events: none;"></line>
                 <line x1="6" y1="6" x2="18" y2="18" style="pointer-events: none;"></line>
@@ -534,10 +504,11 @@ function showToastNotification(message, type = 'success') {
     glowColor = 'rgba(0, 240, 255, 0.35)';
   }
 
+  // Placed at bottom-left so it NEVER blocks the cart sidebar or close button
   toast.style.cssText = `
     position: fixed;
-    top: 24px;
-    right: 24px;
+    bottom: 24px;
+    left: 24px;
     background: #0E1317;
     border: 1px solid ${accentColor};
     color: #FFFFFF;
@@ -546,16 +517,17 @@ function showToastNotification(message, type = 'success') {
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.92rem;
     font-weight: 600;
-    z-index: 9999999;
+    z-index: 99999;
     box-shadow: 0 12px 35px rgba(0, 0, 0, 0.75), 0 0 20px ${glowColor};
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    max-width: calc(100vw - 40px);
+    max-width: calc(100vw - 48px);
     opacity: 0;
-    transform: translateY(-12px);
-    transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    pointer-events: auto;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(12px);
+    transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.25s ease;
     cursor: pointer;
   `;
 
@@ -568,19 +540,27 @@ function showToastNotification(message, type = 'success') {
 
   void toast.offsetWidth;
 
+  toast.style.visibility = 'visible';
+  toast.style.pointerEvents = 'auto';
   toast.style.opacity = '1';
   toast.style.transform = 'translateY(0)';
 
-  toast.onclick = () => {
+  const hideToast = () => {
     toast.style.opacity = '0';
-    toast.style.transform = 'translateY(-12px)';
+    toast.style.pointerEvents = 'none';
+    toast.style.transform = 'translateY(12px)';
+    clearTimeout(window.__toastHideTimer);
+    window.__toastHideTimer = setTimeout(() => {
+      if (toast.style.opacity === '0') {
+        toast.style.visibility = 'hidden';
+      }
+    }, 250);
   };
 
+  toast.onclick = hideToast;
+
   clearTimeout(window.__toastTimeout);
-  window.__toastTimeout = setTimeout(() => {
-    toast.style.opacity = '0';
-    toast.style.transform = 'translateY(-12px)';
-  }, 2800);
+  window.__toastTimeout = setTimeout(hideToast, 2800);
 }
 
 // Global window.alert override to prevent browser popup notifications
@@ -655,32 +635,14 @@ function findCartToggleBtn(target) {
 
 // Global Cart Drawer DOM injection if not in page
 function ensureGlobalCartDrawer() {
-  const existingDrawer = document.getElementById('cart-drawer');
+  let existingDrawer = document.getElementById('cart-drawer');
   if (existingDrawer) {
     existingDrawer.setAttribute('data-lenis-prevent', '');
-    const overlay = document.getElementById('cart-overlay');
-    const closeBtns = existingDrawer.querySelectorAll('#cart-close-btn, .cart-close-btn, [data-cart-close]');
-    const checkoutBtn = document.getElementById('checkout-btn');
-
-    const handleClose = (e) => {
-      if (e) {
-        if (e.__stacklyHandled) return;
-        e.__stacklyHandled = true;
-        if (typeof e.preventDefault === 'function') e.preventDefault();
-        if (typeof e.stopPropagation === 'function') e.stopPropagation();
-      }
-      StacklyCart.close(e);
-    };
-
-    if (overlay) {
-      overlay.onclick = handleClose;
-    }
-    closeBtns.forEach(btn => {
-      btn.onclick = handleClose;
-    });
-    if (checkoutBtn) {
+    const checkoutBtn = existingDrawer.querySelector('#checkout-btn');
+    if (checkoutBtn && !checkoutBtn._hasCheckoutBound) {
+      checkoutBtn._hasCheckoutBound = true;
       checkoutBtn.onclick = (e) => {
-        if (e) e.preventDefault();
+        e.preventDefault();
         StacklyCart.close();
         const isSub = window.location.pathname.includes('customer-dashboard') || window.location.pathname.includes('admin-dashboard');
         window.location.href = isSub ? '../404.html' : '404.html';
@@ -704,7 +666,7 @@ function ensureGlobalCartDrawer() {
   drawer.innerHTML = `
     <div class="cart-drawer-header">
       <h3 class="cart-drawer-title">YOUR GAMING CART</h3>
-      <button class="cart-close-btn" id="cart-close-btn" type="button" data-cart-close="true" aria-label="Close Cart" title="Close Cart" onclick="if(window.StacklyCart)window.StacklyCart.close(event)" style="cursor: pointer; pointer-events: auto !important; position: relative; z-index: 10;">
+      <button class="cart-close-btn" id="cart-close-btn" type="button" data-cart-close="true" aria-label="Close Cart" title="Close Cart" style="cursor: pointer; pointer-events: auto !important; position: relative; z-index: 30;">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="pointer-events: none;">
           <line x1="18" y1="6" x2="6" y2="18" style="pointer-events: none;"></line>
           <line x1="6" y1="6" x2="18" y2="18" style="pointer-events: none;"></line>
@@ -739,97 +701,67 @@ function ensureGlobalCartDrawer() {
   document.body.appendChild(overlay);
   document.body.appendChild(drawer);
 
-  const handleClose = (e) => {
-    if (e) {
-      if (e.__stacklyHandled) return;
-      e.__stacklyHandled = true;
-      if (typeof e.preventDefault === 'function') e.preventDefault();
-      if (typeof e.stopPropagation === 'function') e.stopPropagation();
-    }
-    StacklyCart.close(e);
-  };
-
-  overlay.onclick = handleClose;
-  const injectedCloses = drawer.querySelectorAll('#cart-close-btn, .cart-close-btn, [data-cart-close]');
-  injectedCloses.forEach(btn => {
-    btn.onclick = handleClose;
-  });
-  drawer.querySelector('#checkout-btn').onclick = (e) => {
-    if (e) e.preventDefault();
-    StacklyCart.close();
-    const isSub = window.location.pathname.includes('customer-dashboard') || window.location.pathname.includes('admin-dashboard');
-    window.location.href = isSub ? '../404.html' : '404.html';
-  };
+  const checkoutBtn = drawer.querySelector('#checkout-btn');
+  if (checkoutBtn) {
+    checkoutBtn.onclick = (e) => {
+      e.preventDefault();
+      StacklyCart.close();
+      const isSub = window.location.pathname.includes('customer-dashboard') || window.location.pathname.includes('admin-dashboard');
+      window.location.href = isSub ? '../404.html' : '404.html';
+    };
+  }
 }
 
-// Universal Cart Event Dispatcher (Capture Phase)
-function handleUniversalCartInteraction(e) {
-  if (!e || e.__stacklyHandled) return;
+// Single, centralized document click listener for all cart interactions
+document.addEventListener('click', function (e) {
+  const target = e.target;
+  if (!target) return;
 
-  // 1. Close Button Clicked / Tapped
-  const closeBtn = findCartCloseBtn(e.target);
+  // 1. Close Button Clicked
+  const closeBtn = findCartCloseBtn(target);
   if (closeBtn) {
-    e.__stacklyHandled = true;
-    if (typeof e.preventDefault === 'function') e.preventDefault();
-    if (typeof e.stopPropagation === 'function') e.stopPropagation();
-    if (window.StacklyCart && typeof window.StacklyCart.close === 'function') {
-      window.StacklyCart.close(e);
-    }
+    e.preventDefault();
+    e.stopPropagation();
+    StacklyCart.close(e);
     return;
   }
 
-  // 2. Remove Item Cross Mark Clicked / Tapped
-  const removeBtn = findCartRemoveBtn(e.target);
+  // 2. Remove Item Cross Mark Clicked
+  const removeBtn = findCartRemoveBtn(target);
   if (removeBtn) {
-    e.__stacklyHandled = true;
-    if (typeof e.preventDefault === 'function') e.preventDefault();
-    if (typeof e.stopPropagation === 'function') e.stopPropagation();
-    const idxAttr = removeBtn.getAttribute('data-index');
-    const idx = parseInt(idxAttr, 10);
-    if (!isNaN(idx) && window.StacklyCart && typeof window.StacklyCart.removeItem === 'function') {
-      window.StacklyCart.removeItem(idx);
+    e.preventDefault();
+    e.stopPropagation();
+    const idx = parseInt(removeBtn.getAttribute('data-index'), 10);
+    if (!isNaN(idx)) {
+      StacklyCart.removeItem(idx);
     }
     return;
   }
 
-  // 3. Cart Toggle Button Clicked / Tapped (Navbar Cart, Toolbar Cart, Floating Cart)
-  const toggleBtn = findCartToggleBtn(e.target);
+  // 3. Cart Toggle Button Clicked (Navbar Cart, Toolbar Cart, Floating Cart)
+  const toggleBtn = findCartToggleBtn(target);
   if (toggleBtn) {
-    e.__stacklyHandled = true;
-    if (typeof e.preventDefault === 'function') e.preventDefault();
-    if (typeof e.stopPropagation === 'function') e.stopPropagation();
-    if (window.StacklyCart && typeof window.StacklyCart.toggle === 'function') {
-      window.StacklyCart.toggle(e);
-    } else if (window.StacklyCart && typeof window.StacklyCart.open === 'function') {
-      window.StacklyCart.open();
-    }
+    e.preventDefault();
+    e.stopPropagation();
+    StacklyCart.toggle(e);
     return;
   }
 
   // 4. Overlay Clicked Outside Drawer
-  const overlay = e.target && typeof e.target.closest === 'function' ? e.target.closest('#cart-overlay, .cart-drawer-overlay') : null;
-  if (overlay && (!e.target.closest || !e.target.closest('.cart-drawer'))) {
-    e.__stacklyHandled = true;
-    if (typeof e.preventDefault === 'function') e.preventDefault();
-    if (typeof e.stopPropagation === 'function') e.stopPropagation();
-    if (window.StacklyCart && typeof window.StacklyCart.close === 'function') {
-      window.StacklyCart.close(e);
-    }
-  }
-}
-
-// Universal Event Listener:
-// Standard click in capture phase handles desktop and mobile taps with zero double-triggering
-document.addEventListener('click', handleUniversalCartInteraction, true);
-
-window.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' || e.key === 'Esc') {
-    const isCartActive = document.querySelector('.cart-drawer.active, #cart-drawer.active');
-    if (isCartActive && window.StacklyCart && typeof window.StacklyCart.close === 'function') {
-      window.StacklyCart.close();
-    }
+  if (target.id === 'cart-overlay' || (target.classList && target.classList.contains('cart-drawer-overlay'))) {
+    e.preventDefault();
+    e.stopPropagation();
+    StacklyCart.close(e);
+    return;
   }
 }, true);
+
+// Escape key to close cart
+document.addEventListener('keydown', function (e) {
+  if ((e.key === 'Escape' || e.key === 'Esc') && StacklyCart.isOpen()) {
+    StacklyCart.close();
+  }
+});
 
 /* ==========================================================================
    2. PREMIUM RIGHT-TO-LEFT CINEMATIC HEADING ANIMATION SYSTEM
@@ -995,12 +927,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const toggleButtons = document.querySelectorAll('#nav-cart-btn, .nav-cart-btn, #toolbar-cart-btn, .shop-cart-launch-btn, #floating-cart-btn, .shop-floating-cart-pill, [data-cart-toggle]');
   toggleButtons.forEach(btn => {
     btn.onclick = (e) => {
-      if (e) {
-        if (e.__stacklyHandled) return;
-        e.__stacklyHandled = true;
-        if (typeof e.preventDefault === 'function') e.preventDefault();
-        if (typeof e.stopPropagation === 'function') e.stopPropagation();
-      }
+      if (e) e.preventDefault();
       if (window.StacklyCart && typeof window.StacklyCart.toggle === 'function') {
         window.StacklyCart.toggle(e);
       } else if (window.StacklyCart) {

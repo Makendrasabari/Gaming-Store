@@ -342,6 +342,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background-color: #080B0D;
+  position: relative;
+  z-index: 20;
+  flex-shrink: 0;
 }
 
 .cart-drawer-title {
@@ -370,7 +374,7 @@
   touch-action: manipulation;
   pointer-events: auto !important;
   position: relative;
-  z-index: 10;
+  z-index: 30;
 }
 
 .cart-close-btn:hover {
