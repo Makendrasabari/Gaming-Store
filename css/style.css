@@ -904,6 +904,10 @@ textarea:focus {
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all var(--transition-fast);
+  pointer-events: auto !important;
+  user-select: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .nav-cart-btn:hover {
@@ -911,6 +915,13 @@ textarea:focus {
   color: var(--accent-green);
   background-color: var(--accent-green-dim);
   box-shadow: 0 0 15px rgba(0, 255, 135, 0.25);
+}
+
+.nav-cart-btn svg,
+.nav-cart-btn svg *,
+.nav-cart-btn path,
+.nav-cart-btn circle {
+  pointer-events: none !important;
 }
 
 .nav-cart-badge {
@@ -931,6 +942,7 @@ textarea:focus {
   padding: 0 4px;
   box-shadow: 0 0 8px rgba(0, 255, 135, 0.45);
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none !important;
 }
 
 .nav-cart-btn:hover .nav-cart-badge {
@@ -1042,7 +1054,9 @@ textarea:focus {
   user-select: none;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
-  pointer-events: auto;
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 10;
 }
 
 .cart-close-btn:hover {
@@ -1052,12 +1066,15 @@ textarea:focus {
 }
 
 .cart-close-btn:active {
-  transform: scale(0.92);
-  background: rgba(0, 255, 135, 0.25);
+  background: rgba(0, 255, 135, 0.25) !important;
+  border-color: var(--accent-green) !important;
+  color: var(--accent-green) !important;
 }
 
-.cart-close-btn svg {
-  pointer-events: none;
+.cart-close-btn svg,
+.cart-close-btn svg *,
+.cart-close-btn svg line {
+  pointer-events: none !important;
 }
 
 .cart-drawer-top-actions {
@@ -1216,14 +1233,27 @@ textarea:focus {
   user-select: none;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 10;
 }
 
-.cart-remove-item:hover,
+.cart-remove-item:hover {
+  background: rgba(255, 59, 48, 0.25) !important;
+  border-color: #FF3B30 !important;
+  color: #FFFFFF !important;
+}
+
 .cart-remove-item:active {
-  background: rgba(255, 59, 48, 0.25);
-  border-color: #FF3B30;
-  color: #FFFFFF;
-  transform: scale(1.08);
+  background: rgba(255, 59, 48, 0.35) !important;
+  border-color: #FF3B30 !important;
+  color: #FFFFFF !important;
+}
+
+.cart-remove-item svg,
+.cart-remove-item svg *,
+.cart-remove-item svg line {
+  pointer-events: none !important;
 }
 
 .cart-page-remove-btn {

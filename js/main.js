@@ -120,11 +120,24 @@ window.StacklyCart = {
     }
   },
 
-  removeItem(index) {
+  removeItem(indexOrEvent, maybeIndex) {
+    let e = null;
+    let index = indexOrEvent;
+    if (indexOrEvent && typeof indexOrEvent.preventDefault === 'function') {
+      e = indexOrEvent;
+      index = maybeIndex;
+    }
+    if (e) {
+      if (typeof e.preventDefault === 'function') e.preventDefault();
+      if (typeof e.stopPropagation === 'function') e.stopPropagation();
+      if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
+    }
+    const idx = parseInt(index, 10);
+    if (isNaN(idx)) return;
     const cart = this.getCart();
-    if (cart[index]) {
-      const removedTitle = cart[index].title;
-      cart.splice(index, 1);
+    if (cart[idx]) {
+      const removedTitle = cart[idx].title;
+      cart.splice(idx, 1);
       this.saveCart(cart);
       showToastNotification(`Removed "${removedTitle}" from cart.`);
       if (typeof window.renderCartPage === 'function') {
@@ -156,8 +169,22 @@ window.StacklyCart = {
     });
   },
 
+  isOpen() {
+    const drawer = document.querySelector('.cart-drawer.active, #cart-drawer.active');
+    return Boolean(drawer);
+  },
+
+  toggle(e) {
+    if (this.isOpen()) {
+      this.close(e);
+    } else {
+      this.open();
+    }
+  },
+
   open() {
-    if (isCartClosing || window.isCartClosing) return;
+    isCartClosing = false;
+    window.isCartClosing = false;
     ensureGlobalCartDrawer();
     const drawers = document.querySelectorAll('.cart-drawer, #cart-drawer');
     drawers.forEach(d => {
@@ -172,6 +199,12 @@ window.StacklyCart = {
     document.body.classList.add('cart-open');
     document.documentElement.classList.add('cart-open');
     this.render();
+
+    // Re-verify close button direct listeners
+    const closeBtns = document.querySelectorAll('#cart-close-btn, .cart-close-btn, [data-cart-close]');
+    closeBtns.forEach(btn => {
+      btn.onclick = (e) => StacklyCart.close(e);
+    });
   },
 
   close(e) {
@@ -191,14 +224,25 @@ window.StacklyCart = {
     drawers.forEach(d => {
       d.classList.remove('active');
       d.setAttribute('aria-hidden', 'true');
+      d.style.transform = '';
+      d.style.visibility = '';
+      d.style.pointerEvents = '';
     });
     const overlays = document.querySelectorAll('.cart-drawer-overlay, #cart-overlay');
     overlays.forEach(o => {
       o.classList.remove('active');
       o.setAttribute('aria-hidden', 'true');
+      o.style.opacity = '';
+      o.style.visibility = '';
+      o.style.pointerEvents = '';
     });
     document.body.classList.remove('cart-open');
     document.documentElement.classList.remove('cart-open');
+    if (window.location.hash === '#cart') {
+      try {
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+      } catch (err) {}
+    }
   },
 
   render() {
@@ -257,10 +301,10 @@ window.StacklyCart = {
           
           <div class="cart-item-action-col">
             <span class="cart-item-total-price">$${itemTotal.toFixed(2)}</span>
-            <button class="cart-remove-item" data-index="${idx}" onclick="StacklyCart.removeItem(${idx})" title="Remove item" aria-label="Remove item">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="pointer-events: none;">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
+            <button class="cart-remove-item" type="button" data-index="${idx}" onclick="StacklyCart.removeItem(event, ${idx})" title="Remove item" aria-label="Remove item">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="pointer-events: none;">
+                <line x1="18" y1="6" x2="6" y2="18" style="pointer-events: none;"></line>
+                <line x1="6" y1="6" x2="18" y2="18" style="pointer-events: none;"></line>
               </svg>
             </button>
           </div>
@@ -518,6 +562,70 @@ window.alert = function (message) {
   showToastNotification(message, 'info');
 };
 
+// Helper to resolve cart close button across SVG children and shadow boundaries
+function findCartCloseBtn(target) {
+  if (!target) return null;
+  if (typeof target.closest === 'function') {
+    try {
+      const btn = target.closest('#cart-close-btn, .cart-close-btn, [data-cart-close]');
+      if (btn) return btn;
+    } catch (err) {}
+  }
+  let curr = target;
+  while (curr && curr !== document && curr !== document.body) {
+    if (curr.id === 'cart-close-btn' ||
+        (curr.classList && curr.classList.contains('cart-close-btn')) ||
+        (typeof curr.hasAttribute === 'function' && curr.hasAttribute('data-cart-close'))) {
+      return curr;
+    }
+    curr = curr.parentElement || curr.parentNode;
+  }
+  return null;
+}
+
+// Helper to resolve item remove button across SVG children
+function findCartRemoveBtn(target) {
+  if (!target) return null;
+  if (typeof target.closest === 'function') {
+    try {
+      const btn = target.closest('.cart-remove-item, [data-cart-remove]');
+      if (btn) return btn;
+    } catch (err) {}
+  }
+  let curr = target;
+  while (curr && curr !== document && curr !== document.body) {
+    if ((curr.classList && curr.classList.contains('cart-remove-item')) ||
+        (typeof curr.hasAttribute === 'function' && curr.hasAttribute('data-cart-remove'))) {
+      return curr;
+    }
+    curr = curr.parentElement || curr.parentNode;
+  }
+  return null;
+}
+
+// Helper to resolve cart toggle button across SVG children and badges
+function findCartToggleBtn(target) {
+  if (!target) return null;
+  if (typeof target.closest === 'function') {
+    try {
+      const btn = target.closest('#nav-cart-btn, .nav-cart-btn, #toolbar-cart-btn, .shop-cart-launch-btn, #floating-cart-btn, .shop-floating-cart-pill, [data-cart-toggle]');
+      if (btn) return btn;
+    } catch (err) {}
+  }
+  let curr = target;
+  while (curr && curr !== document && curr !== document.body) {
+    if (curr.id === 'nav-cart-btn' ||
+        curr.id === 'toolbar-cart-btn' ||
+        curr.id === 'floating-cart-btn' ||
+        (curr.classList && (curr.classList.contains('nav-cart-btn') || curr.classList.contains('shop-cart-launch-btn') || curr.classList.contains('shop-floating-cart-pill'))) ||
+        (typeof curr.hasAttribute === 'function' && curr.hasAttribute('data-cart-toggle'))) {
+      return curr;
+    }
+    curr = curr.parentElement || curr.parentNode;
+  }
+  return null;
+}
+
 // Global Cart Drawer DOM injection if not in page
 function ensureGlobalCartDrawer() {
   const existingDrawer = document.getElementById('cart-drawer');
@@ -531,6 +639,7 @@ function ensureGlobalCartDrawer() {
       if (e) {
         if (typeof e.preventDefault === 'function') e.preventDefault();
         if (typeof e.stopPropagation === 'function') e.stopPropagation();
+        if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
       }
       StacklyCart.close(e);
     };
@@ -540,6 +649,9 @@ function ensureGlobalCartDrawer() {
     }
     closeBtns.forEach(btn => {
       btn.onclick = handleClose;
+      btn.addEventListener('click', handleClose, true);
+      btn.addEventListener('pointerup', handleClose, true);
+      btn.addEventListener('touchend', handleClose, { capture: true, passive: false });
     });
     if (checkoutBtn) {
       checkoutBtn.onclick = (e) => {
@@ -567,10 +679,10 @@ function ensureGlobalCartDrawer() {
   drawer.innerHTML = `
     <div class="cart-drawer-header">
       <h3 class="cart-drawer-title">YOUR GAMING CART</h3>
-      <button class="cart-close-btn" id="cart-close-btn" type="button" data-cart-close="true" aria-label="Close Cart" title="Close Cart" onclick="StacklyCart.close(event)">
+      <button class="cart-close-btn" id="cart-close-btn" type="button" data-cart-close="true" aria-label="Close Cart" title="Close Cart" onclick="if(window.StacklyCart)window.StacklyCart.close(event)" style="cursor: pointer; pointer-events: auto !important; position: relative; z-index: 10;">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="pointer-events: none;">
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
+          <line x1="18" y1="6" x2="6" y2="18" style="pointer-events: none;"></line>
+          <line x1="6" y1="6" x2="18" y2="18" style="pointer-events: none;"></line>
         </svg>
       </button>
     </div>
@@ -606,6 +718,7 @@ function ensureGlobalCartDrawer() {
     if (e) {
       if (typeof e.preventDefault === 'function') e.preventDefault();
       if (typeof e.stopPropagation === 'function') e.stopPropagation();
+      if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
     }
     StacklyCart.close(e);
   };
@@ -614,6 +727,9 @@ function ensureGlobalCartDrawer() {
   const injectedCloses = drawer.querySelectorAll('#cart-close-btn, .cart-close-btn, [data-cart-close]');
   injectedCloses.forEach(btn => {
     btn.onclick = handleClose;
+    btn.addEventListener('click', handleClose, true);
+    btn.addEventListener('pointerup', handleClose, true);
+    btn.addEventListener('touchend', handleClose, { capture: true, passive: false });
   });
   drawer.querySelector('#checkout-btn').onclick = (e) => {
     if (e) e.preventDefault();
@@ -623,14 +739,15 @@ function ensureGlobalCartDrawer() {
   };
 }
 
-// Universal Cart Drawer Close & Item Remove Event Delegation
-document.addEventListener('click', (e) => {
-  // 1. Close Button Clicked
-  const closeBtn = e.target && e.target.closest ? e.target.closest('#cart-close-btn, .cart-close-btn, [data-cart-close]') : null;
+// Universal Cart Event Dispatcher (Capture Phase)
+function handleUniversalCartInteraction(e) {
+  // 1. Close Button Clicked / Tapped
+  const closeBtn = findCartCloseBtn(e.target);
   if (closeBtn) {
     if (e) {
-      e.preventDefault();
-      e.stopPropagation();
+      if (typeof e.preventDefault === 'function') e.preventDefault();
+      if (typeof e.stopPropagation === 'function') e.stopPropagation();
+      if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
     }
     if (window.StacklyCart && typeof window.StacklyCart.close === 'function') {
       window.StacklyCart.close(e);
@@ -638,12 +755,13 @@ document.addEventListener('click', (e) => {
     return;
   }
 
-  // 2. Remove Item Cross Mark Clicked
-  const removeBtn = e.target && e.target.closest ? e.target.closest('.cart-remove-item') : null;
+  // 2. Remove Item Cross Mark Clicked / Tapped
+  const removeBtn = findCartRemoveBtn(e.target);
   if (removeBtn) {
     if (e) {
-      e.preventDefault();
-      e.stopPropagation();
+      if (typeof e.preventDefault === 'function') e.preventDefault();
+      if (typeof e.stopPropagation === 'function') e.stopPropagation();
+      if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
     }
     const idxAttr = removeBtn.getAttribute('data-index');
     const idx = parseInt(idxAttr, 10);
@@ -653,38 +771,46 @@ document.addEventListener('click', (e) => {
     return;
   }
 
-  // 3. Overlay Clicked Outside Drawer
-  const overlay = e.target && e.target.closest ? e.target.closest('#cart-overlay, .cart-drawer-overlay') : null;
-  if (overlay && !(e.target.closest && e.target.closest('.cart-drawer'))) {
-    if (e) e.preventDefault();
-    if (window.StacklyCart && typeof window.StacklyCart.close === 'function') {
-      window.StacklyCart.close(e);
-    }
-  }
-});
-
-// Touch event handler for responsive & mobile devices
-document.addEventListener('touchend', (e) => {
-  const closeBtn = e.target && e.target.closest ? e.target.closest('#cart-close-btn, .cart-close-btn, [data-cart-close]') : null;
-  if (closeBtn) {
+  // 3. Cart Toggle Button Clicked / Tapped (Navbar Cart, Toolbar Cart, Floating Cart)
+  const toggleBtn = findCartToggleBtn(e.target);
+  if (toggleBtn) {
     if (e) {
-      e.preventDefault();
-      e.stopPropagation();
+      if (typeof e.preventDefault === 'function') e.preventDefault();
+      if (typeof e.stopPropagation === 'function') e.stopPropagation();
+      if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
     }
+    if (window.StacklyCart && typeof window.StacklyCart.toggle === 'function') {
+      window.StacklyCart.toggle(e);
+    } else if (window.StacklyCart && typeof window.StacklyCart.open === 'function') {
+      window.StacklyCart.open();
+    }
+    return;
+  }
+
+  // 4. Overlay Clicked Outside Drawer
+  const overlay = e.target && typeof e.target.closest === 'function' ? e.target.closest('#cart-overlay, .cart-drawer-overlay') : null;
+  if (overlay && (!e.target.closest || !e.target.closest('.cart-drawer'))) {
+    if (e && typeof e.preventDefault === 'function') e.preventDefault();
     if (window.StacklyCart && typeof window.StacklyCart.close === 'function') {
       window.StacklyCart.close(e);
     }
   }
-}, { passive: false });
+}
 
-document.addEventListener('keydown', (e) => {
+// Universal Event Listeners in Capture Phase
+window.addEventListener('click', handleUniversalCartInteraction, true);
+document.addEventListener('click', handleUniversalCartInteraction, true);
+window.addEventListener('touchend', handleUniversalCartInteraction, { capture: true, passive: false });
+document.addEventListener('touchend', handleUniversalCartInteraction, { capture: true, passive: false });
+
+window.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' || e.key === 'Esc') {
     const isCartActive = document.querySelector('.cart-drawer.active, #cart-drawer.active');
     if (isCartActive && window.StacklyCart && typeof window.StacklyCart.close === 'function') {
       window.StacklyCart.close();
     }
   }
-});
+}, true);
 
 /* ==========================================================================
    2. PREMIUM RIGHT-TO-LEFT CINEMATIC HEADING ANIMATION SYSTEM
@@ -846,15 +972,18 @@ document.addEventListener('DOMContentLoaded', () => {
   StacklyCart.render();
   StacklyCart.updateBadges();
 
-  // Attach to navbar cart button
-  const navCartBtn = document.getElementById('nav-cart-btn');
-  if (navCartBtn) {
-    navCartBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      if (isCartClosing || window.isCartClosing) return;
-      StacklyCart.open();
-    });
-  }
+  // Attach to all cart toggle buttons across navbar, toolbar, floating
+  const toggleButtons = document.querySelectorAll('#nav-cart-btn, .nav-cart-btn, #toolbar-cart-btn, .shop-cart-launch-btn, #floating-cart-btn, .shop-floating-cart-pill, [data-cart-toggle]');
+  toggleButtons.forEach(btn => {
+    btn.onclick = (e) => {
+      if (e) e.preventDefault();
+      if (window.StacklyCart && typeof window.StacklyCart.toggle === 'function') {
+        window.StacklyCart.toggle(e);
+      } else if (window.StacklyCart) {
+        StacklyCart.open();
+      }
+    };
+  });
 
   // Check URL param ?open=cart
   if (window.location.search.includes('open=cart') || window.location.hash === '#cart') {
