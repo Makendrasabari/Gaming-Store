@@ -175,6 +175,10 @@ window.StacklyCart = {
   },
 
   toggle(e) {
+    // Guard against rapid double-fire (e.g. inline onclick + capture handler both firing)
+    const now = Date.now();
+    if (this._lastToggleTime && now - this._lastToggleTime < 300) return;
+    this._lastToggleTime = now;
     if (this.isOpen()) {
       this.close(e);
     } else {
@@ -208,6 +212,8 @@ window.StacklyCart = {
   },
 
   close(e) {
+    // Guard: ignore if already closing or already closed
+    if (!this.isOpen()) return;
     if (e) {
       if (typeof e.preventDefault === 'function') e.preventDefault();
       if (typeof e.stopPropagation === 'function') e.stopPropagation();
@@ -740,7 +746,13 @@ function ensureGlobalCartDrawer() {
 }
 
 // Universal Cart Event Dispatcher (Capture Phase)
+// De-duplicate guard: prevent double-fire when both window + document fire the same event
+let _cartHandlerBusy = false;
 function handleUniversalCartInteraction(e) {
+  if (_cartHandlerBusy) return;
+  _cartHandlerBusy = true;
+  setTimeout(function () { _cartHandlerBusy = false; }, 0);
+
   // 1. Close Button Clicked / Tapped
   const closeBtn = findCartCloseBtn(e.target);
   if (closeBtn) {
@@ -797,10 +809,8 @@ function handleUniversalCartInteraction(e) {
   }
 }
 
-// Universal Event Listeners in Capture Phase
-window.addEventListener('click', handleUniversalCartInteraction, true);
+// Universal Event Listeners in Capture Phase (document only — no window duplicate)
 document.addEventListener('click', handleUniversalCartInteraction, true);
-window.addEventListener('touchend', handleUniversalCartInteraction, { capture: true, passive: false });
 document.addEventListener('touchend', handleUniversalCartInteraction, { capture: true, passive: false });
 
 window.addEventListener('keydown', (e) => {
