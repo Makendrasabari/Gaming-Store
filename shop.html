@@ -2102,8 +2102,11 @@
     const toolbarCartBtn = document.getElementById('toolbar-cart-btn');
     if (toolbarCartBtn) {
       toolbarCartBtn.onclick = (e) => {
-        if (e) e.preventDefault();
-        if (window.isCartClosing) return;
+        if (e) {
+          if (e.__stacklyHandled) return;
+          e.__stacklyHandled = true;
+          e.preventDefault();
+        }
         if (window.StacklyCart && typeof window.StacklyCart.toggle === 'function') {
           window.StacklyCart.toggle(e);
         } else if (window.StacklyCart) {
@@ -2115,8 +2118,11 @@
     const floatingCartBtn = document.getElementById('floating-cart-btn');
     if (floatingCartBtn) {
       floatingCartBtn.onclick = (e) => {
-        if (e) e.preventDefault();
-        if (window.isCartClosing) return;
+        if (e) {
+          if (e.__stacklyHandled) return;
+          e.__stacklyHandled = true;
+          e.preventDefault();
+        }
         if (window.StacklyCart && typeof window.StacklyCart.toggle === 'function') {
           window.StacklyCart.toggle(e);
         } else if (window.StacklyCart) {
