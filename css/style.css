@@ -526,6 +526,14 @@ textarea:invalid {
   padding: 0;
 }
 
+.footer-logo-link {
+  display: inline-block;
+  text-decoration: none;
+  align-self: flex-start;
+  cursor: pointer;
+  line-height: 0;
+}
+
 .footer-logo {
   height: 54px;
   width: auto;
@@ -535,9 +543,12 @@ textarea:invalid {
   margin: 0;
   padding: 0;
   transition: transform 0.25s ease, filter 0.25s ease;
+  cursor: pointer;
 }
 
-.footer-logo:hover {
+.footer-logo:hover,
+.footer-logo-link:hover .footer-logo,
+.footer-logo-link:focus-visible .footer-logo {
   transform: scale(1.03);
   filter: drop-shadow(0 0 14px rgba(0, 255, 135, 0.45));
 }

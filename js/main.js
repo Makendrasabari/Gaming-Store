@@ -936,6 +936,23 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   });
 
+  // Footer Stackly Logo Behavior: Smooth scroll to top if already on Home, otherwise standard navigation
+  const footerLogoLinks = document.querySelectorAll('.footer-logo-link');
+  footerLogoLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      const path = window.location.pathname.toLowerCase();
+      const isHome = path.endsWith('index.html') || path === '/' || path.endsWith('/') || !path.includes('.html');
+      if (isHome) {
+        e.preventDefault();
+        if (window.lenis && typeof window.lenis.scrollTo === 'function') {
+          window.lenis.scrollTo(0, { duration: 1.1 });
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }
+    });
+  });
+
   // Check URL param ?open=cart
   if (window.location.search.includes('open=cart') || window.location.hash === '#cart') {
     setTimeout(() => StacklyCart.open(), 300);
